@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Landing Page - Pointa</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #e2e8f0;
+        background: radial-gradient(circle at top left, #1e293b, #0f172a 55%);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(14px);
+        padding: 1.5rem 0;
+        box-shadow: 0 2px 18px rgba(15, 23, 42, 0.65);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #38bdf8;
+        letter-spacing: 0.04em;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #cbd5f5;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: #38bdf8;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 4rem 0;
+        color: #e2e8f0;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        color: #ef4444;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 2rem;
+        background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 100%);
+        color: #0f172a;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight: 600;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        box-shadow: 0 10px 25px rgba(34, 211, 238, 0.25);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 35px rgba(56, 189, 248, 0.35);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #e2e8f0;
+        border: 2px solid rgba(148, 163, 184, 0.5);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(148, 163, 184, 0.15);
+        border-color: rgba(56, 189, 248, 0.7);
+        color: #38bdf8;
+      }
+
+      .section {
+        background: rgba(15, 23, 42, 0.75);
+        margin: 2rem 0;
+        padding: 3rem;
+        border-radius: 18px;
+        box-shadow: 0 20px 45px rgba(2, 6, 23, 0.5);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        backdrop-filter: blur(12px);
+      }
+
+      #contact {
+        background: rgba(13, 148, 136, 0.12);
+      }
+
+      .section h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #38bdf8;
+        text-align: center;
+        letter-spacing: 0.03em;
+      }
+
+      #features h2 {
+        color: #ef4444;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+        background: linear-gradient(
+          160deg,
+          rgba(30, 41, 59, 0.95),
+          rgba(15, 23, 42, 0.95)
+        );
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 35px rgba(15, 23, 42, 0.45);
+      }
+
+      .feature-card h3 {
+        color: #a855f7;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-section {
+        background: rgba(15, 23, 42, 0.85);
+        padding: 2rem;
+        border-radius: 14px;
+        margin-top: 1rem;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #e2e8f0;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid rgba(148, 163, 184, 0.25);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        background: rgba(15, 23, 42, 0.85);
+        color: #f8fafc;
+      }
+
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: rgba(148, 163, 184, 0.6);
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: rgba(56, 189, 248, 0.7);
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .card {
+        background: linear-gradient(
+          160deg,
+          rgba(30, 41, 59, 0.95),
+          rgba(15, 23, 42, 0.9)
+        );
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 22px 45px rgba(15, 23, 42, 0.65);
+      }
+
+      .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          #38bdf8 0%,
+          #a855f7 50%,
+          #f472b6 100%
+        );
+        margin-bottom: 1rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2.5rem;
+        color: rgba(226, 232, 240, 0.8);
+        opacity: 0.95;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.5rem 1.2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin: 0.25rem;
+        border: none;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+
+      .alert {
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        border-left: 4px solid transparent;
+        background: rgba(15, 23, 42, 0.65);
+        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.1);
+      }
+
+      .alert-info {
+        background: linear-gradient(
+          135deg,
+          rgba(30, 64, 175, 0.35),
+          rgba(15, 23, 42, 0.65)
+        );
+        color: #93c5fd;
+        border-left-color: #3b82f6;
+      }
+
+      .alert-warning {
+        background: linear-gradient(
+          135deg,
+          rgba(217, 119, 6, 0.35),
+          rgba(15, 23, 42, 0.65)
+        );
+        color: #fbbf24;
+        border-left-color: #f97316;
+      }
+
+      .alert-success {
+        background: linear-gradient(
+          135deg,
+          rgba(22, 163, 74, 0.35),
+          rgba(15, 23, 42, 0.65)
+        );
+        color: #4ade80;
+        border-left-color: #22c55e;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="container">
+        <div class="logo">Pointa</div>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#playbook">Playbook</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>Welcome to the Test Landing Page</h1>
+        <p>This page is designed for testing the Pointa extension</p>
+        <div style="margin-top: 2rem">
+          <button
+            class="btn"
+            style="
+              background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+              color: #0f172a;
+            "
+          >
+            Get Started
+          </button>
+          <button class="btn btn-secondary" style="margin-left: 1rem">
+            Learn More
+          </button>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>Key Features</h2>
+        <div class="features">
+          <div class="feature-card">
+            <h3>🚀 Fast & Efficient</h3>
+            <p>
+              Experience lightning-fast performance with our optimized system.
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>🔒 Secure & Reliable</h3>
+            <p>
+              Your data is protected with enterprise-grade security measures.
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>💡 Easy to Use</h3>
+            <p>Intuitive interface designed for users of all skill levels.</p>
+          </div>
+          <div class="feature-card">
+            <h3>🌐 Cross-Platform</h3>
+            <p>Works seamlessly across all devices and browsers.</p>
+          </div>
+          <div class="feature-card">
+            <h3>🆓 Completely free</h3>
+            <p>No hidden costs, no subscriptions - completely free forever.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <h2>About This Page</h2>
+        <p>
+          This is a test landing page created specifically for testing the
+          Pointa browser extension. Feel free to click on any element to
+          create annotations and test the extension's functionality.
+        </p>
+
+        <div class="alert alert-info">
+          <strong>Info:</strong> This page contains various HTML elements that
+          you can annotate, including buttons, forms, cards, and text elements.
+        </div>
+
+        <div class="alert alert-warning">
+          <strong>Note:</strong> Make sure the annotations server is running
+          before testing.
+        </div>
+
+        <div
+          class="alert alert-success"
+          style="font-size: 23px; line-height: 1.6"
+        >
+          <strong>Success:</strong> If you can see this, the page is loading
+          correctly!
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Sample Content Cards</h2>
+        <div class="grid">
+          <div class="card">
+            <div
+              style="
+                width: 100%;
+                height: 150px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 5px;
+                margin-bottom: 1rem;
+              "
+            ></div>
+            <h3>Card Title 1</h3>
+            <p>
+              This is a sample card with some content that you can annotate.
+            </p>
+            <button
+              class="btn"
+              style="
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+              "
+            >
+              Read More
+            </button>
+          </div>
+          <div class="card">
+            <div
+              style="
+                width: 100%;
+                height: 150px;
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                border-radius: 5px;
+                margin-bottom: 1rem;
+              "
+            ></div>
+            <h3>Card Title 2</h3>
+            <p>Another card with different content for testing purposes.</p>
+            <button
+              class="btn"
+              style="
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+              "
+            >
+              Read More
+            </button>
+          </div>
+          <div class="card">
+            <div
+              style="
+                width: 100%;
+                height: 150px;
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                border-radius: 5px;
+                margin-bottom: 1rem;
+              "
+            ></div>
+            <h3>Card Title 3</h3>
+            <p>
+              Yet another card to test annotation functionality on multiple
+              elements.
+            </p>
+            <button
+              class="btn"
+              style="
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+              "
+            >
+              Read More
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <h2>Contact Form</h2>
+        <div class="form-section">
+          <form id="testForm">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="jobTitle">Job Title</label>
+              <input
+                type="text"
+                id="jobTitle"
+                name="jobTitle"
+                placeholder="Enter your job title"
+              />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Enter your message"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="btn"
+              style="
+                background-color: #8a0f0f;
+                background-image: none;
+                color: #f8fafc;
+              "
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Additional Elements</h2>
+        <p>Here are some additional elements you can test annotations on:</p>
+        <div style="margin-top: 1rem">
+          <span class="badge">Badge 1</span>
+          <span class="badge">Badge 2</span>
+          <span class="badge">Badge 3</span>
+        </div>
+        <div style="margin-top: 2rem">
+          <h3>Sample List</h3>
+          <ul style="margin-top: 1rem; padding-left: 2rem">
+            <li>First list item for testing</li>
+            <li>Second list item for testing</li>
+            <li>Third list item for testing</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Test Landing Page. Created for Pointa testing.</p>
+    </footer>
+
+    <script>
+      // Prevent form submission for testing
+      document
+        .getElementById("testForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Form submission prevented for testing purposes");
+        });
+    </script>
+  </body>
+</html>

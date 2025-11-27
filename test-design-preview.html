@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Mode Preview - Pointa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Design tokens - light theme */
+            --theme-surface: #f8f9fc;
+            --theme-surface-1: #fcfcfd;
+            --theme-text-primary: #0c111b;
+            --theme-text-secondary: #697586;
+            --theme-outline: #00000014;
+            --theme-outline-highlight: #00000028;
+            --theme-accent: #0c8ce9;
+            --theme-on-accent: #ffffff;
+            --theme-surface-hover: #0d0f1c14;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+
+        .left-section {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        /* Sidebar Styles - Simulating Pointa Sidebar */
+        .sidebar-demo {
+            background: var(--theme-surface-1);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--theme-text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--theme-outline);
+        }
+
+        .sidebar-annotation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--theme-surface);
+            cursor: pointer;
+            transition: background 0.15s ease;
+            position: relative;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-annotation-item:hover {
+            background: var(--theme-surface-hover);
+        }
+
+        .sidebar-annotation-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--theme-accent);
+            color: var(--theme-on-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .sidebar-annotation-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-annotation-preview {
+            font-size: 13px;
+            color: var(--theme-text-primary);
+            line-height: 1.4;
+        }
+
+        /* Design Preview Styles */
+        .design-preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .design-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .design-preview-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+            opacity: 0.8;
+        }
+
+        .design-preview-label {
+            color: var(--theme-text-secondary);
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .design-preview-value {
+            color: var(--theme-text-primary);
+            font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Menlo, Consolas, monospace;
+            font-size: 11px;
+            background: var(--theme-outline);
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .design-preview-swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            border: 1px solid var(--theme-outline-highlight);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .design-preview-more {
+            opacity: 0.7;
+        }
+
+        .design-preview-more-count {
+            color: var(--theme-text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .sidebar-annotation-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sidebar-annotation-tag {
+            font-size: 11px;
+            padding: 2px 6px;
+            background: var(--theme-accent);
+            color: white;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .title-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .title-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .title-section p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .comparison-item {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .comparison-item h4 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        .old-style {
+            color: var(--theme-text-primary);
+            font-size: 13px;
+            line-height: 1.4;
+            padding: 8px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="left-section">
+            <h1>Design Mode Preview ✨</h1>
+            <p>
+                This page demonstrates the improved design mode annotation display in Pointa's sidebar.
+                Instead of showing raw JSON-like text, annotations now have a sleek, visual preview with icons and formatting.
+            </p>
+
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h4>❌ Old Style</h4>
+                    <div class="old-style">
+                        padding top: 16px, color: #667eea, +2 more
+                    </div>
+                </div>
+                <div class="comparison-item">
+                    <h4>✅ New Style</h4>
+                    <p style="font-size: 12px; color: #666; margin: 0;">See examples in the sidebar →</p>
+                </div>
+            </div>
+
+            <button class="button">Try Design Mode</button>
+
+            <div class="card">
+                <h3>Key Improvements</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">🎨 Color swatches for visual feedback</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">📏 Category icons (spacing, typography, etc.)</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">💎 Monospace values in subtle badges</li>
+                    <li style="padding: 8px 0;">✨ Clean, scannable layout</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sidebar-demo">
+            <div class="sidebar-header">Design Annotations (5)</div>
+
+            <!-- Example 1: Color change -->
+            <div class="sidebar-annotation-item">
+                <div class="sidebar-annotation-number">1</div>
+                <div class="sidebar-annotation-content">
+                    <div class="sidebar-annotation-preview">
+                        <div class="design-preview-container">
+                            <div class="design-preview-item design-preview-color">
+                                <span class="design-preview-icon">🎨</span>
+                                <span class="design-preview-label">background color</span>
+                                <span class="design-preview-swatch" style="background-color: #667eea;" title="#667eea"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-annotation-meta">
+                        <span class="sidebar-annotation-tag">Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: Typography changes -->
+            <div class="sidebar-annotation-item">
+                <div class="sidebar-annotation-number">2</div>
+                <div class="sidebar-annotation-content">
+                    <div class="sidebar-annotation-preview">
+                        <div class="design-preview-container">
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">📝</span>
+                                <span class="design-preview-label">font size</span>
+                                <span class="design-preview-value">24px</span>
+                            </div>
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">📝</span>
+                                <span class="design-preview-label">font weight</span>
+                                <span class="design-preview-value">600</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-annotation-meta">
+                        <span class="sidebar-annotation-tag">Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3: Spacing changes -->
+            <div class="sidebar-annotation-item">
+                <div class="sidebar-annotation-number">3</div>
+                <div class="sidebar-annotation-content">
+                    <div class="sidebar-annotation-preview">
+                        <div class="design-preview-container">
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">📏</span>
+                                <span class="design-preview-label">padding top</span>
+                                <span class="design-preview-value">24px</span>
+                            </div>
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">📏</span>
+                                <span class="design-preview-label">padding bottom</span>
+                                <span class="design-preview-value">24px</span>
+                            </div>
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">📏</span>
+                                <span class="design-preview-label">gap</span>
+                                <span class="design-preview-value">16px</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-annotation-meta">
+                        <span class="sidebar-annotation-tag">Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4: Multiple changes with "more" indicator -->
+            <div class="sidebar-annotation-item">
+                <div class="sidebar-annotation-number">4</div>
+                <div class="sidebar-annotation-content">
+                    <div class="sidebar-annotation-preview">
+                        <div class="design-preview-container">
+                            <div class="design-preview-item design-preview-color">
+                                <span class="design-preview-icon">🎨</span>
+                                <span class="design-preview-label">color</span>
+                                <span class="design-preview-swatch" style="background-color: #764ba2;" title="#764ba2"></span>
+                            </div>
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">📝</span>
+                                <span class="design-preview-label">font size</span>
+                                <span class="design-preview-value">18px</span>
+                            </div>
+                            <div class="design-preview-item">
+                                <span class="design-preview-icon">⬜</span>
+                                <span class="design-preview-label">border radius</span>
+                                <span class="design-preview-value">8px</span>
+                            </div>
+                            <div class="design-preview-item design-preview-more">
+                                <span class="design-preview-more-count">+3 more</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-annotation-meta">
+                        <span class="sidebar-annotation-tag">Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 5: Position change -->
+            <div class="sidebar-annotation-item">
+                <div class="sidebar-annotation-number">5</div>
+                <div class="sidebar-annotation-content">
+                    <div class="sidebar-annotation-preview">
+                        <div class="design-preview-container">
+                            <div class="design-preview-item design-preview-position">
+                                <span class="design-preview-icon">📍</span>
+                                <span class="design-preview-label">Moved element</span>
+                            </div>
+                            <div class="design-preview-item design-preview-color">
+                                <span class="design-preview-icon">🎨</span>
+                                <span class="design-preview-label">background color</span>
+                                <span class="design-preview-swatch" style="background-color: rgb(255, 122, 0);" title="rgb(255, 122, 0)"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-annotation-meta">
+                        <span class="sidebar-annotation-tag">Design</span>
+                        <span class="sidebar-annotation-tag" style="background: #f59e0b;">📍 Position</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 6: Text content change -->
+            <div class="sidebar-annotation-item">
+                <div class="sidebar-annotation-number">6</div>
+                <div class="sidebar-annotation-content">
+                    <div class="sidebar-annotation-preview">
+                        <div class="design-preview-container">
+                            <div class="design-preview-item design-preview-text">
+                                <span class="design-preview-icon">✏️</span>
+                                <span class="design-preview-label">Text</span>
+                                <span class="design-preview-value">"Click here to get started"</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-annotation-meta">
+                        <span class="sidebar-annotation-tag">Design</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
+
+

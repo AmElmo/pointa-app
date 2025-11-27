@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test: Similar Elements - Pointa Annotation Targeting</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: #f5f5f5;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .description {
+        color: #666;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+      }
+
+      .test-section {
+        margin-bottom: 40px;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .test-section h2 {
+        margin-top: 0;
+        color: #555;
+      }
+
+      /* Similar card elements - intentionally identical styling */
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .card {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fafafa;
+        transition: all 0.2s;
+      }
+
+      .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 10px 0;
+      }
+
+      .card-description {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      /* Similar button elements */
+      .button-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background: #4caf50;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #45a049;
+      }
+
+      /* Similar list items */
+      .item-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      .list-item {
+        padding: 15px;
+        margin-bottom: 10px;
+        background: #f9f9f9;
+        border-left: 3px solid #4caf50;
+        border-radius: 4px;
+      }
+
+      .list-item-title {
+        font-weight: 600;
+        color: #333;
+      }
+
+      .list-item-meta {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      .instructions {
+        background: #e3f2fd;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 30px;
+        border-left: 4px solid #2196f3;
+      }
+
+      .instructions h3 {
+        margin-top: 0;
+        color: #1976d2;
+      }
+
+      .instructions ol {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+
+      .instructions li {
+        margin-bottom: 8px;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎯 Pointa: Similar Elements Test</h1>
+
+    <div class="description">
+      <strong>Purpose:</strong> This page tests Pointa's ability to accurately
+      target and distinguish between similar-looking elements. The annotation
+      system should always return you to the <em>exact same element</em> you
+      annotated, not a similar-looking one.
+    </div>
+
+    <!-- Test Section 1: Identical Cards -->
+    <div class="test-section">
+      <h2>Test 1: Identical Cards (Same Classes, Similar Content)</h2>
+      <p>
+        These cards have identical HTML structure and CSS classes. Annotate
+        specific cards and verify clicking the annotation returns to the correct
+        card.
+      </p>
+
+      <div class="card-container">
+        <div class="card">
+          <h3 class="card-title">Product Alpha</h3>
+          <p class="card-description">
+            This is the first product card. It has the same structure as the
+            others but different text content.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Product Beta</h3>
+          <p class="card-description">
+            This is the second product card. It has the same structure as the
+            others but different text content.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Product Gamma</h3>
+          <p class="card-description">
+            This is the third product card. It has the same structure as the
+            others but different text content.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Product Delta</h3>
+          <p class="card-description">
+            This is the fourth product card. It has the same structure as the
+            others but different text content.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Section 2: Identical Buttons -->
+    <div class="test-section">
+      <h2>Test 2: Identical Buttons (Same Classes, Same Text)</h2>
+      <p>
+        These buttons are completely identical in both structure and appearance.
+        This is the hardest case to distinguish.
+      </p>
+
+      <div class="button-row">
+        <button class="btn btn-primary">Submit</button>
+        <button class="btn btn-primary">Submit</button>
+        <button class="btn btn-primary">Submit</button>
+        <button class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+
+    <!-- Test Section 3: Similar List Items -->
+    <div class="test-section">
+      <h2>Test 3: Similar List Items</h2>
+      <p>List items with identical structure but slightly different content.</p>
+
+      <ul class="item-list">
+        <li class="list-item">
+          <div class="list-item-title">Task: Review pull request #123</div>
+          <div class="list-item-meta">Priority: High • Due: Today</div>
+        </li>
+        <li class="list-item">
+          <div class="list-item-title">Task: Update documentation</div>
+          <div class="list-item-meta">Priority: Medium • Due: Tomorrow</div>
+        </li>
+        <li class="list-item">
+          <div class="list-item-title">Task: Fix bug in login flow</div>
+          <div class="list-item-meta">Priority: Critical • Due: Today</div>
+        </li>
+        <li class="list-item">
+          <div class="list-item-title">Task: Deploy to staging</div>
+          <div class="list-item-meta">Priority: Medium • Due: Next week</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+      <h3>📋 Testing Instructions</h3>
+      <ol>
+        <li>
+          <strong>Create annotations:</strong> Use Pointa to annotate 2-3
+          different cards, buttons, or list items.
+        </li>
+        <li>
+          <strong>Open sidebar:</strong> Open the Pointa sidebar to see your
+          annotations listed.
+        </li>
+        <li>
+          <strong>Click annotations:</strong> Click on each annotation in the
+          sidebar.
+        </li>
+        <li>
+          <strong>Verify targeting:</strong> Confirm that clicking each
+          annotation scrolls to and highlights the
+          <em>exact same element</em> you originally annotated, not a similar
+          one.
+        </li>
+        <li>
+          <strong>Test edge cases:</strong> Try annotating the identical
+          "Submit" buttons to ensure even the hardest case works correctly.
+        </li>
+      </ol>
+
+      <p>
+        <strong>Expected Result:</strong> Every annotation should always
+        reference back to its original element with 100% accuracy. The
+        persistent <code>data-pointa-id</code> marker ensures this reliability.
+      </p>
+    </div>
+  </body>
+</html>
+
+
+
+
+

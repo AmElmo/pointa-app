@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Streamline - Build Better Products Faster</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0b0;
+        --accent-purple: #8b5cf6;
+        --accent-blue: #3b82f6;
+        --accent-pink: #ec4899;
+        --border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
+          "Helvetica Neue", Arial, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Navigation */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        backdrop-filter: blur(12px);
+        background: rgba(10, 10, 15, 0.8);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          var(--accent-purple),
+          var(--accent-blue)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .nav-links a:hover {
+        color: var(--text-primary);
+      }
+
+      .nav-cta {
+        display: flex;
+        gap: 16px;
+      }
+
+      .btn-secondary {
+        padding: 8px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .btn-primary {
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-purple),
+          var(--accent-blue)
+        );
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 160px 0 120px;
+        text-align: center;
+        position: relative;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(
+          circle,
+          rgba(139, 92, 246, 0.15),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .hero-badge span {
+        color: var(--accent-purple);
+        font-weight: 600;
+      }
+
+      h1 {
+        font-size: 72px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #ffffff, #a0a0b0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-subtitle {
+        font-size: 20px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 40px;
+      }
+
+      .hero-cta {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        margin-bottom: 80px;
+      }
+
+      .btn-large {
+        padding: 14px 28px;
+        font-size: 16px;
+        border-radius: 10px;
+      }
+
+      /* Hero Visual */
+      .hero-visual {
+        max-width: 1000px;
+        margin: 0 auto;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-secondary);
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-visual::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(
+          180deg,
+          rgba(139, 92, 246, 0.1),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      .visual-content {
+        background: var(--bg-primary);
+        border-radius: 8px;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .visual-grid {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            var(--border-color) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.3;
+      }
+
+      .visual-shapes {
+        position: relative;
+        z-index: 1;
+      }
+
+      .shape {
+        position: absolute;
+        border-radius: 12px;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .shape1 {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-purple),
+          var(--accent-blue)
+        );
+        opacity: 0.2;
+        top: 50px;
+        left: 100px;
+        animation-delay: 0s;
+      }
+
+      .shape2 {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--accent-pink)
+        );
+        opacity: 0.2;
+        bottom: 100px;
+        right: 150px;
+        animation-delay: 2s;
+      }
+
+      .shape3 {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-pink),
+          var(--accent-purple)
+        );
+        opacity: 0.2;
+        top: 200px;
+        right: 100px;
+        animation-delay: 4s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      /* Features Section */
+      .features {
+        padding: 120px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+      }
+
+      .section-label {
+        font-size: 14px;
+        color: var(--accent-purple);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      .section-description {
+        font-size: 18px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+
+      .feature-card {
+        padding: 32px;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--bg-secondary);
+        transition: all 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent-purple);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-purple),
+          var(--accent-blue)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .feature-card h3 {
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      /* Showcase Section */
+      .showcase {
+        padding: 120px 0;
+        background: var(--bg-secondary);
+      }
+
+      .showcase-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        margin-bottom: 100px;
+      }
+
+      .showcase-content:nth-child(even) {
+        direction: rtl;
+      }
+
+      .showcase-content:nth-child(even) > * {
+        direction: ltr;
+      }
+
+      .showcase-text h3 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      .showcase-text p {
+        font-size: 17px;
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+        line-height: 1.7;
+      }
+
+      .showcase-visual {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--bg-primary);
+        padding: 40px;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .showcase-visual::before {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          rgba(139, 92, 246, 0.2),
+          transparent
+        );
+        border-radius: 50%;
+      }
+
+      /* Stats Section */
+      .stats {
+        padding: 120px 0;
+        text-align: center;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 48px;
+        margin-top: 60px;
+      }
+
+      .stat-item h4 {
+        font-size: 48px;
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          var(--accent-purple),
+          var(--accent-blue)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+      }
+
+      .stat-item p {
+        color: var(--text-secondary);
+        font-size: 16px;
+      }
+
+      /* Testimonials */
+      .testimonials {
+        padding: 120px 0;
+        background: var(--bg-secondary);
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        margin-top: 60px;
+      }
+
+      .testimonial-card {
+        padding: 32px;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--bg-primary);
+      }
+
+      .testimonial-text {
+        font-size: 16px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        color: var(--text-secondary);
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--accent-purple),
+          var(--accent-blue)
+        );
+      }
+
+      .author-info h5 {
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+
+      .author-info p {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      /* CTA Section */
+      .cta-section {
+        padding: 120px 0;
+        text-align: center;
+      }
+
+      .cta-box {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 80px 60px;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        background: var(--bg-secondary);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: radial-gradient(
+          circle at top,
+          rgba(139, 92, 246, 0.1),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .cta-box h2 {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .cta-box p {
+        font-size: 18px;
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+        position: relative;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        position: relative;
+      }
+
+      /* Footer */
+      footer {
+        padding: 80px 0 40px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 60px;
+      }
+
+      .footer-brand p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-top: 16px;
+        line-height: 1.7;
+      }
+
+      .footer-links h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+
+      .footer-links ul {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 12px;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: var(--text-primary);
+      }
+
+      .footer-bottom {
+        padding-top: 32px;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-bottom p {
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 16px;
+      }
+
+      .social-links a {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+
+      .social-links a:hover {
+        border-color: var(--accent-purple);
+        color: var(--accent-purple);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 48px;
+        }
+
+        .features-grid,
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .showcase-content {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-content">
+        <div class="logo">Streamline</div>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#solutions">Solutions</a></li>
+          <li><a href="#customers">Customers</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#company">Company</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="#" class="btn-secondary">Sign in</a>
+          <a href="#" class="btn-primary">Get started</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">
+          <span>New:</span> Introducing AI-powered workflows
+        </div>
+        <h1>Build products<br />your users love</h1>
+        <p class="hero-subtitle">
+          Streamline your product development with powerful tools that help
+          teams collaborate, ship faster, and build with confidence.
+        </p>
+        <div class="hero-cta">
+          <a href="#" class="btn-primary btn-large">Start building for free</a>
+          <a href="#" class="btn-secondary btn-large">Schedule a demo</a>
+        </div>
+        <div class="hero-visual">
+          <div class="visual-content">
+            <div class="visual-grid"></div>
+            <div class="visual-shapes">
+              <div class="shape shape1"></div>
+              <div class="shape shape2"></div>
+              <div class="shape shape3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Features</div>
+          <h2>Everything you need</h2>
+          <p class="section-description">
+            Powerful features to help your team move faster and build better
+            products together.
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Lightning Fast</h3>
+            <p>
+              Built for speed. Our platform is optimized to handle your workload
+              with incredible performance.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Purpose Built</h3>
+            <p>
+              Designed specifically for product teams. Every feature crafted
+              with intention and care.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Secure by Default</h3>
+            <p>
+              Enterprise-grade security built in. Your data is encrypted and
+              protected at all times.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>AI-Powered</h3>
+            <p>
+              Smart automation that learns from your workflow and helps you work
+              more efficiently.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3>Global Scale</h3>
+            <p>
+              Built to scale with your business. From startup to enterprise, we
+              grow with you.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💜</div>
+            <h3>Love to Use</h3>
+            <p>
+              Beautiful, intuitive interface that your team will actually enjoy
+              using every day.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Showcase Section -->
+    <section class="showcase" id="solutions">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Solutions</div>
+          <h2>Built for modern teams</h2>
+        </div>
+        <div class="showcase-content">
+          <div class="showcase-text">
+            <h3>Collaborate in real-time</h3>
+            <p>
+              Work together seamlessly with your team. Real-time collaboration
+              tools that make it easy to stay in sync and move fast.
+            </p>
+            <p>
+              Share feedback, discuss ideas, and make decisions together—all in
+              one place.
+            </p>
+            <a href="#" class="btn-primary">Learn more →</a>
+          </div>
+          <div class="showcase-visual">
+            <div class="visual-grid"></div>
+          </div>
+        </div>
+        <div class="showcase-content">
+          <div class="showcase-text">
+            <h3>Ship with confidence</h3>
+            <p>
+              Track progress, manage releases, and ship features your users will
+              love. Built-in workflows that help you deliver faster.
+            </p>
+            <p>
+              From planning to production, we've got you covered every step of
+              the way.
+            </p>
+            <a href="#" class="btn-primary">Learn more →</a>
+          </div>
+          <div class="showcase-visual">
+            <div class="visual-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Trusted by teams worldwide</div>
+          <h2>The numbers speak for themselves</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <h4>10K+</h4>
+            <p>Active teams</p>
+          </div>
+          <div class="stat-item">
+            <h4>99.9%</h4>
+            <p>Uptime</p>
+          </div>
+          <div class="stat-item">
+            <h4>50M+</h4>
+            <p>Tasks completed</p>
+          </div>
+          <div class="stat-item">
+            <h4>150+</h4>
+            <p>Countries</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="customers">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Testimonials</div>
+          <h2>Loved by product teams</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "Streamline has completely transformed how our team works. We ship
+              features 3x faster now and everyone loves using it."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <div class="author-info">
+                <h5>Sarah Chen</h5>
+                <p>Product Lead at Acme Corp</p>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "The best product tool we've ever used. It's fast, beautiful, and
+              just works. Our team adopted it immediately."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <div class="author-info">
+                <h5>Marcus Johnson</h5>
+                <p>Engineering Manager at TechCo</p>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "Finally, a tool that doesn't get in the way. Streamline helps us
+              focus on building great products, not managing tools."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar"></div>
+              <div class="author-info">
+                <h5>Emily Rodriguez</h5>
+                <p>VP Product at StartupXYZ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Ready to get started?</h2>
+          <p>
+            Join thousands of teams already building better products with
+            Streamline.
+          </p>
+          <div class="cta-buttons">
+            <a href="#" class="btn-primary btn-large">Start free trial</a>
+            <a href="#" class="btn-secondary btn-large">Talk to sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <div class="logo">Streamline</div>
+            <p>
+              Built for modern product teams who want to move fast and build
+              amazing products.
+            </p>
+          </div>
+          <div class="footer-links">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Changelog</a></li>
+              <li><a href="#">Roadmap</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Documentation</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">API</a></li>
+              <li><a href="#">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Status</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Streamline. All rights reserved.</p>
+          <div class="social-links">
+            <a href="#">𝕏</a>
+            <a href="#">in</a>
+            <a href="#">gh</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Add scroll effect to nav
+      let lastScroll = 0;
+      const nav = document.querySelector("nav");
+
+      window.addEventListener("scroll", () => {
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll <= 0) {
+          nav.style.boxShadow = "none";
+        } else {
+          nav.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
+        }
+
+        lastScroll = currentScroll;
+      });
+    </script>
+  </body>
+</html>

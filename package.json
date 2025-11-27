@@ -1,0 +1,14 @@
+{
+  "name": "pointa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pointa - AI-powered development annotations",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}
+

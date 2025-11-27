@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Pointa",
+  "version": "1.0.3",
+  "description": "AI-powered development annotations for local development projects and HTML files",
+  "privacy_policy": "https://www.pointa.dev/privacy",
+  "author": "Julien Berthomier - Argil.io",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications",
+    "tabs",
+    "debugger",
+    "scripting"
+  ],
+  "icons": {
+    "16": "assets/icons/pointa-icon16.png",
+    "32": "assets/icons/pointa-icon32.png",
+    "48": "assets/icons/pointa-icon48.png",
+    "128": "assets/icons/pointa-icon128.png"
+  },
+  "action": {
+    "default_title": "Pointa - Toggle Sidebar",
+    "default_icon": {
+      "16": "assets/icons/pointa-icon16.png",
+      "32": "assets/icons/pointa-icon32.png",
+      "48": "assets/icons/pointa-icon48.png",
+      "128": "assets/icons/pointa-icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background/background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/fonts/InterVariable.woff2",
+        "assets/icons/pointa-icon128.png",
+        "assets/icons/pointa-icon48.png",
+        "assets/icons/pointa-icon32.png",
+        "assets/icons/pointa-icon16.png",
+        "assets/icons/chat.png",
+        "assets/icons/pencil.png",
+        "assets/icons/stars.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

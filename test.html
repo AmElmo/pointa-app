@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Inspirations - Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter Variable", "SF Pro Display", -apple-system,
+          "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+          "Open Sans", "Helvetica Neue", "Linear Thai", sans-serif;
+        background: #0a0a0a;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        gap: 4rem;
+      }
+
+      .active-issues-container {
+        width: 340px;
+        height: 260px;
+        background: rgba(0, 0, 0, 0);
+        border: 1px solid #3b82f6;
+        display: flex;
+        flex-direction: column;
+        justify-content: normal;
+        align-items: normal;
+        gap: 24px;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      .icons-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: fit-content;
+        padding: 24px 24px 0 24px;
+      }
+
+      .icon-circle {
+        width: 24px;
+        height: 24px;
+        border: 1.5px solid #ffffff;
+        border-radius: 50%;
+        position: relative;
+        background: transparent;
+      }
+
+      .icon-circle::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+        height: 8px;
+        border: 1.5px solid #ffffff;
+        border-radius: 50%;
+        background: transparent;
+      }
+
+      .icon-circle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        width: 6px;
+        height: 6px;
+        border-top: 1.5px solid #ffffff;
+        border-right: 1.5px solid #ffffff;
+        border-radius: 2px 0 0 0;
+      }
+
+      .content-section {
+        padding: 0 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #ffffff;
+        margin: 0;
+      }
+
+      .description {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #ffffff;
+        margin: 0;
+      }
+
+      .buttons-container {
+        display: flex;
+        gap: 8px;
+        padding: 0 24px 24px 24px;
+      }
+
+      .btn-primary {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "Inter Variable", "SF Pro Display", -apple-system,
+          "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+          "Open Sans", "Helvetica Neue", "Linear Thai", sans-serif;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        background: #2563eb;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "Inter Variable", "SF Pro Display", -apple-system,
+          "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+          "Open Sans", "Helvetica Neue", "Linear Thai", sans-serif;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .keyboard-shortcut {
+        opacity: 0.6;
+        font-size: 12px;
+        margin-left: 4px;
+      }
+
+      /* Expo Deployment Workflow Styles */
+      .deployment-workflow {
+        width: 1152px;
+        height: 331px;
+        background: rgba(0, 0, 0, 0);
+        border: 1px solid color(display-p3 0.93 0.933 0.94);
+        display: block;
+        position: relative;
+        padding: 0px;
+        margin: 0px;
+        font-family: Inter, "Inter Fallback", Inter, system-ui, sans-serif,
+          sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 26px;
+        color: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .workflow-container {
+        display: flex;
+        align-items: flex-start;
+        height: 100%;
+        padding: 24px;
+        gap: 24px;
+      }
+
+      .config-panel {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 16px;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .config-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: color(display-p3 0.93 0.933 0.94);
+        margin: 0;
+      }
+
+      .config-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .config-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .config-input,
+      .config-select {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        padding: 6px 8px;
+        color: color(display-p3 0.93 0.933 0.94);
+        font-size: 14px;
+        font-family: Inter, "Inter Fallback", Inter, system-ui, sans-serif,
+          sans-serif;
+      }
+
+      .config-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+      }
+
+      .toggle-label {
+        font-size: 14px;
+        color: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .toggle-switch {
+        width: 36px;
+        height: 20px;
+        background: #3b82f6;
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: white;
+        border-radius: 50%;
+        top: 2px;
+        right: 2px;
+        transition: transform 0.2s;
+      }
+
+      .workflow-nodes {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        flex: 1;
+        position: relative;
+        padding-top: 20px;
+      }
+
+      .workflow-line {
+        width: 40px;
+        height: 2px;
+        background: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .workflow-node {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 120px;
+      }
+
+      .workflow-node-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .workflow-node-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .workflow-node-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .workflow-node-meta {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .workflow-branches {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        flex: 1;
+        position: relative;
+        margin-left: 16px;
+      }
+
+      .workflow-branches::before {
+        content: "";
+        position: absolute;
+        left: -16px;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .workflow-branch {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        position: relative;
+      }
+
+      .workflow-branch-line {
+        width: 2px;
+        height: 60px;
+        background: color(display-p3 0.93 0.933 0.94);
+        margin-top: 20px;
+        flex-shrink: 0;
+      }
+
+      .workflow-branch::before {
+        content: "";
+        position: absolute;
+        left: -16px;
+        top: 20px;
+        width: 16px;
+        height: 2px;
+        background: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .workflow-branch-nodes {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: 1;
+      }
+
+      .checkmark-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #22c55e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .checkmark-icon::after {
+        content: "✓";
+      }
+
+      .skip-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      .skip-icon::after {
+        content: "×";
+      }
+
+      .search-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: color(display-p3 0.93 0.933 0.94);
+      }
+
+      .search-icon::before {
+        content: "🔍";
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="active-issues-container">
+      <div class="icons-grid">
+        <div class="icon-circle"></div>
+        <div class="icon-circle"></div>
+        <div class="icon-circle"></div>
+        <div class="icon-circle"></div>
+      </div>
+
+      <div class="content-section">
+        <h2 class="title">Active issues</h2>
+        <p class="description">
+          Active issues represent work that is currently in flight or should be
+          worked on next. There are currently no active issues in this team.
+          Once an issue moves to the Todo or In Progress state, it will show up
+          here.
+        </p>
+      </div>
+
+      <div class="buttons-container">
+        <button class="btn-primary">
+          Create new issue<span class="keyboard-shortcut">C</span>
+        </button>
+        <button class="btn-secondary">Documentation</button>
+      </div>
+    </div>
+
+    <!-- Expo Deployment Workflow -->
+    <div class="deployment-workflow">
+      <div class="workflow-container">
+        <!-- Configuration Panel -->
+        <div class="config-panel">
+          <h3 class="config-title">Deploy to production</h3>
+          <div class="config-field">
+            <label class="config-label">On every</label>
+            <select class="config-select">
+              <option>merge</option>
+            </select>
+          </div>
+          <div class="config-field">
+            <label class="config-label">on branch</label>
+            <input type="text" class="config-input" value="main" />
+          </div>
+          <div class="config-toggle">
+            <span class="toggle-label">Enabled</span>
+            <div class="toggle-switch"></div>
+          </div>
+        </div>
+
+        <!-- Workflow Nodes -->
+        <div class="workflow-nodes">
+          <div class="workflow-line"></div>
+          <div class="workflow-node">
+            <div class="workflow-node-icon search-icon"></div>
+            <div class="workflow-node-content">
+              <div class="workflow-node-title">Get build</div>
+            </div>
+          </div>
+
+          <!-- Branching Workflow -->
+          <div class="workflow-branches">
+            <!-- iOS Path -->
+            <div class="workflow-branch">
+              <div class="workflow-branch-line"></div>
+              <div class="workflow-branch-nodes">
+                <div class="workflow-node">
+                  <div class="workflow-node-icon checkmark-icon"></div>
+                  <div class="workflow-node-content">
+                    <div class="workflow-node-title">Build iOS</div>
+                    <div class="workflow-node-meta">Duration: 5m 42s</div>
+                  </div>
+                </div>
+                <div class="workflow-line"></div>
+                <div class="workflow-node">
+                  <div class="workflow-node-icon checkmark-icon"></div>
+                  <div class="workflow-node-content">
+                    <div class="workflow-node-title">Submit to App Store</div>
+                    <div class="workflow-node-meta">Duration: 5m 42s</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Android Path -->
+            <div class="workflow-branch">
+              <div class="workflow-branch-line"></div>
+              <div class="workflow-branch-nodes">
+                <div class="workflow-node">
+                  <div class="workflow-node-icon checkmark-icon"></div>
+                  <div class="workflow-node-content">
+                    <div class="workflow-node-title">Build Android</div>
+                    <div class="workflow-node-meta">Duration: 9m 54s</div>
+                  </div>
+                </div>
+                <div class="workflow-line"></div>
+                <div class="workflow-node">
+                  <div class="workflow-node-icon checkmark-icon"></div>
+                  <div class="workflow-node-content">
+                    <div class="workflow-node-title">
+                      Submit to Google Play Store
+                    </div>
+                    <div class="workflow-node-meta">Duration: 9m 54s</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- OTA Update Path -->
+            <div class="workflow-branch">
+              <div class="workflow-branch-line"></div>
+              <div class="workflow-branch-nodes">
+                <div class="workflow-node">
+                  <div class="workflow-node-icon skip-icon"></div>
+                  <div class="workflow-node-content">
+                    <div class="workflow-node-title">
+                      Send over-the-air update
+                    </div>
+                    <div class="workflow-node-meta">Skipped</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
