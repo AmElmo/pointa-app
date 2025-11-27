@@ -17,7 +17,11 @@ Pointa is a browser extension and local server that lets you add visual annotati
 
 Think of it as "visual issue tracking" that your AI can read and act on - no more copying CSS selectors or describing which button you're talking about.
 
+Report bugs in seconds
+
 ![Bug report](docs/images/bug_report_screen_feature.png)
+
+Get your AI coding tool to bulk fix your annotations (through MCP integration)
 
 ![Ask AI feature](docs/images/ask_ai_screen_feature.png)
 
