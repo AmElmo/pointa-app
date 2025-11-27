@@ -19,11 +19,11 @@ Think of it as "visual issue tracking" that your AI can read and act on - no mor
 
 Report bugs in seconds
 
-![Bug report](docs/images/bug_report_screen_feature.png)
+<img src="docs/images/bug_report_screen_feature.png" width="700" alt="Bug report feature">
 
 Get your AI coding tool to bulk fix your annotations (through MCP integration)
 
-![Ask AI feature](docs/images/ask_ai_screen_feature.png)
+<img src="docs/images/ask_ai_screen_feature.png" width="700" alt="Bug report feature">
 
 
 
