@@ -9,13 +9,19 @@
 
 🌐 **Website**: [pointa.dev](https://pointa.dev/)
 
-[SCREENSHOT_PLACEHOLDER_1: Main demo showing annotation workflow]
+![Main image](docs/images/annotation_feature.png)
 
 ## What is Pointa?
 
 Pointa is a browser extension and local server that lets you add visual annotations to your localhost development projects. Click on any element, leave a comment, and your AI coding agent (Cursor, Claude Code, Windsurf, etc.) can automatically implement the changes.
 
 Think of it as "visual issue tracking" that your AI can read and act on - no more copying CSS selectors or describing which button you're talking about.
+
+![Bug report](docs/images/bug_report_screen_feature.png)
+
+![Ask AI feature](docs/images/ask_ai_screen_feature.png)
+
+
 
 ## Key Features
 
@@ -68,9 +74,9 @@ User clicks element → Extension captures context → Server stores annotation
 AI Agent ← MCP Protocol ← Server provides annotation data
 ```
 
-[SCREENSHOT_PLACEHOLDER_2: Extension UI showing annotation creation]
+![Annotation flow](docs/images/annotation_flow_feature.gif)
 
-[SCREENSHOT_PLACEHOLDER_3: AI agent reading and implementing changes]
+![MCP integration](docs/images/mcp_integration_feature.gif)
 
 ## Quick Start
 
@@ -124,7 +130,6 @@ See the [AI Agent Setup](#ai-agent-setup) section for specific instructions.
 4. Add your feedback/instructions
 5. Ask your AI coding agent to "implement the Pointa annotations"
 
-[SCREENSHOT_PLACEHOLDER_4: Step-by-step usage workflow]
 
 ## AI Agent Setup
 
