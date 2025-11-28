@@ -1,7 +1,7 @@
 
 🍰 THE CAKE
 
-- [ ] !!!!!!!! Check the discussion with Cursor on switching MCP to "npx" command rather and how to handle all the edge cases
+- [x] !!!!!!!! Check the discussion with Cursor on switching MCP to "npx" command rather and how to handle all the edge cases - COMPLETED: Updated README.md, onboarding-overlay.js, and all documentation to use npx command approach. Architecture already supports it perfectly via stdio mode in cli.js.
 
 - [x] Make the JSON reference much smaller (2k+ tokens each time is crazy) - keep it lean for context window and token efficiency
 - [x] !!! Remove the delete annotation done by the MCP - Always a human who should validate it was done correctly !!! Add the done by AI flow with status from the MCP server when it did the work and then manual human touch where it clicks done (checkmark) to say it is done or ask for a further review again
@@ -22,7 +22,7 @@
 - [x] FEAT: in design mode, would it be possible to just drag and move an element to a new position, have it show in the page in real-time and then edit the JSON with the right info so the AI does it correctly.
 - [x] Feat: bug reporting (requires a proper spec) - get inspiration from jam.dev (but lighter version)
 - [x] Feat: performance audit (requires a proper spec)
-- [x] Feat: Inspiration from any other website - select and it takes screenshot + any valuable Metadata and send to JSON for the model to get inspiration from - wait actually inspiration is unlikely to work by bulk so we don't want to add that to the JSON, we already have an MCP, how can we leverage it to get the inspiration fed into Cursor or else easily??? It will likely not be a bulk flow but rather a one time you find a great component, you select and it sends to the vibe coding tool to get inspiration. The user experience is basically: I am working on a new element, I want to feed inspiration to my AI coding tool easily, I switch to the browser, use pointa to select this element and hop it provides the inspiration right away... how to make that work beautifully and seemlessly for the user. 
+- [x] Feat: Inspiration from any other website - select and it takes screenshot + any valuable Metadata and send to JSON for the model to get inspiration from - wait actually inspiration is unlikely to work by bulk so we don't want to add that to the JSON, we already have an MCP, how can we leverage it to get the inspiration fed into Cursor or else easily??? It will likely not be a bulk flow but rather a one time you find a great component, you select and it sends to the vibe coding tool to get inspiration. The user experience is basically: I am working on a new element, I want to feed inspiration to my AI coding tool easily, I switch to the browser, use pointa to select this element and hop it provides the inspiration right away... how to make that work beautifully and seamlessly for the user. 
 - [x] FEAT: Add a proper onboarding flow on first extension install
 - [x] EDIT: Does it make sense to also require to purge done annotations, I think we should replace the tabs with active aka waiting for AI and other tab as "to review" and once it is reviewed it just disappears entirely
 - [x] What is this "capture screenshot" feature in the settings? Do we keep it? Do we remove it? is it used in our code logic right now? - RESOLVED: Removed entirely as the rich metadata (selectors, source mapping, parent chain, design mode) provides sufficient context for AI
@@ -30,6 +30,7 @@
 - [x] Add mention of the bug report and performance investigation in the onboarding flow as well
 - [ ] Allow a proper interaction with the AI: if for instance the user asked a question in the annotation, then the AI is allowed add an answer back (would it required to add another add_comment to the MCP server actions? and then it would display as a comment answer for that specific annotation... recreating a sort of conversation between the human and the AI as on Figma)
 - [ ] FEAT: add a recording mode: you just record your screen and highlight with your mouse around, we feed that to an LLM and you get auto-generated annotations ready for your LLM to fix in bulk (make that paying feature???) - could it be created as a separate Chrome extension doing just that?
+- [ ] !!! FEAT add ability to add a screenshot of the element on which an annotation is being written (just one click button, saves the image and attach it to the annotation)
 
 🍪 THE CRUMBS
 - [x] Hitting "esc" on keyboard should leave the onboarding modal flow when we hit it 
