@@ -3755,16 +3755,17 @@ ${taskDescription}`;
                 
                 <!-- Claude Code Tab -->
                 <div class="pointa-tab-content active" data-agent="claude">
-                  <p>Run this command in your project directory:</p>
+                  <p>Add to your Claude configuration file:</p>
               <div class="pointa-command-code">
-                <code>claude mcp add --transport http pointa http://127.0.0.1:4242/mcp</code>
-                <button class="pointa-copy-btn" data-command="claude mcp add --transport http pointa http://127.0.0.1:4242/mcp" title="Copy command">
+                <code>{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}</code>
+                <button class="pointa-copy-btn" data-command='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}' title="Copy command">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
                   </svg>
                 </button>
               </div>
+              <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Or use CLI: <code>claude mcp add pointa npx -- -y pointa-server</code></p>
                 </div>
                 
                 <!-- Cursor Tab -->
@@ -3772,8 +3773,8 @@ ${taskDescription}`;
                   <p>Open Cursor → Settings → Cursor Settings → Tools & Integrations</p>
                   <p>Click + Add new global MCP server and enter:</p>
                   <div class="pointa-command-code">
-                    <code>{"mcpServers":{"pointa":{"url":"http://127.0.0.1:4242/mcp"}}}</code>
-                    <button class="pointa-copy-btn" data-command='{"mcpServers":{"pointa":{"url":"http://127.0.0.1:4242/mcp"}}}' title="Copy command">
+                    <code>{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}</code>
+                    <button class="pointa-copy-btn" data-command='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}' title="Copy command">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>

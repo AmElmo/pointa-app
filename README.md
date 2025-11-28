@@ -97,12 +97,16 @@ AI Agent ← MCP Protocol ← Server provides annotation data
 
 ### Installation
 
-**1. Install the server**
+**1. Install the server (optional)**
+
+The server will be automatically installed when you configure your AI tool with npx. However, if you want to manually install and manage it:
 
 ```bash
 npm install -g pointa-server
 pointa-server start
 ```
+
+**Note:** With the npx approach (recommended), you can skip this step entirely.
 
 **2. Install the browser extension**
 
@@ -117,19 +121,25 @@ Option B: Load unpacked (for development)
 
 **3. Connect your AI coding agent**
 
-Add the MCP server to your AI agent's configuration:
+Add the MCP server to your AI agent's configuration using npx (recommended):
 
 ```json
 {
   "mcpServers": {
     "pointa": {
-      "url": "http://127.0.0.1:4242/mcp"
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
     }
   }
 }
 ```
 
-See the [AI Agent Setup](#ai-agent-setup) section for specific instructions.
+This approach automatically:
+- Installs the server if not present
+- Starts the HTTP daemon for the Chrome extension (if needed)
+- Keeps the server up-to-date
+
+See the [AI Agent Setup](#ai-agent-setup) section for tool-specific instructions.
 
 ### Usage
 
@@ -147,27 +157,48 @@ See the [AI Agent Setup](#ai-agent-setup) section for specific instructions.
 
 1. Open Settings → Cursor Settings
 2. Go to Tools & Integrations tab
-3. Add this configuration:
+3. Click **+ Add new global MCP server**
+4. Add this configuration:
 
 ```json
 {
   "mcpServers": {
     "pointa": {
-      "url": "http://127.0.0.1:4242/mcp"
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
     }
   }
 }
 ```
+
+5. Save and restart Cursor
+
+**Note:** The npx command automatically handles server installation and startup. No need to manually run `pointa-server start`.
 </details>
 
 <details>
 <summary><b>Claude Code</b></summary>
 
-In your project directory:
+Add to your Claude configuration file (`~/.config/claude/config.json` or similar):
+
+```json
+{
+  "mcpServers": {
+    "pointa": {
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
+    }
+  }
+}
+```
+
+Or use the CLI:
 
 ```bash
-claude mcp add --transport http pointa http://127.0.0.1:4242/mcp
+claude mcp add pointa npx -- -y pointa-server
 ```
+
+**Note:** The npx command automatically handles server installation and startup.
 </details>
 
 <details>
@@ -181,11 +212,16 @@ claude mcp add --transport http pointa http://127.0.0.1:4242/mcp
 {
   "mcpServers": {
     "pointa": {
-      "serverUrl": "http://127.0.0.1:4242/mcp"
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
     }
   }
 }
 ```
+
+4. Save and restart Windsurf
+
+**Note:** The npx command automatically handles server installation and startup. No need to manually run `pointa-server start`.
 </details>
 
 <details>
@@ -197,11 +233,26 @@ Install an MCP-compatible AI extension and add:
 {
   "mcpServers": {
     "pointa": {
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
+    }
+  }
+}
+```
+
+**Note:** The npx command automatically handles server installation and startup. If your tool doesn't support the command/args format, you can use the HTTP endpoint approach:
+
+```json
+{
+  "mcpServers": {
+    "pointa": {
       "url": "http://127.0.0.1:4242/mcp"
     }
   }
 }
 ```
+
+(Requires manually running `pointa-server start` first)
 </details>
 
 ## Server Commands

@@ -164,7 +164,7 @@ const VibeOnboarding = {
       `;
       if (nextButton) {
         nextButton.disabled = false;
-        nextButton.textContent = 'Skip for Now';
+        nextButton.textContent = 'Continue Anyway';
       }
     }
     
@@ -213,7 +213,7 @@ const VibeOnboarding = {
             <li>Paste this configuration:</li>
           </ol>
           <div class="code-block">
-            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"url":"http://127.0.0.1:4242/mcp"}}}'>
+            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}'>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
@@ -223,7 +223,8 @@ const VibeOnboarding = {
             <pre>{
   "mcpServers": {
     "pointa": {
-      "url": "http://127.0.0.1:4242/mcp"
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
     }
   }
 }</pre>
@@ -231,21 +232,31 @@ const VibeOnboarding = {
           <ol start="4">
             <li>Save and restart Cursor</li>
           </ol>
+          <p class="note"><strong>✨ No manual server start needed!</strong> npx automatically handles installation and startup.</p>
         </div>
       `,
       claude: `
         <div class="agent-instructions">
-          <p>Run in your terminal:</p>
+          <p>Add to your Claude configuration file:</p>
           <div class="code-block">
-            <button class="copy-btn" data-copy="claude mcp add --transport http pointa http://127.0.0.1:4242/mcp">
+            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}'>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
               </svg>
               Copy
             </button>
-            <pre>claude mcp add --transport http pointa http://127.0.0.1:4242/mcp</pre>
+            <pre>{
+  "mcpServers": {
+    "pointa": {
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
+    }
+  }
+}</pre>
           </div>
+          <p class="note">Or use CLI: <code>claude mcp add pointa npx -- -y pointa-server</code></p>
+          <p class="note"><strong>✨ No manual server start needed!</strong> npx automatically handles installation and startup.</p>
         </div>
       `,
       windsurf: `
@@ -255,7 +266,7 @@ const VibeOnboarding = {
             <li>Add this configuration:</li>
           </ol>
           <div class="code-block">
-            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"serverUrl":"http://127.0.0.1:4242/mcp"}}}'>
+            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}'>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
@@ -265,7 +276,8 @@ const VibeOnboarding = {
             <pre>{
   "mcpServers": {
     "pointa": {
-      "serverUrl": "http://127.0.0.1:4242/mcp"
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
     }
   }
 }</pre>
@@ -273,6 +285,7 @@ const VibeOnboarding = {
           <ol start="3">
             <li>Save and restart Windsurf</li>
           </ol>
+          <p class="note"><strong>✨ No manual server start needed!</strong> npx automatically handles installation and startup.</p>
         </div>
       `,
       vscode: `
@@ -283,7 +296,7 @@ const VibeOnboarding = {
             <li>Add this configuration:</li>
           </ol>
           <div class="code-block">
-            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"url":"http://127.0.0.1:4242/mcp"}}}'>
+            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}'>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
@@ -293,16 +306,38 @@ const VibeOnboarding = {
             <pre>{
   "mcpServers": {
     "pointa": {
-      "url": "http://127.0.0.1:4242/mcp"
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
     }
   }
 }</pre>
           </div>
+          <p class="note"><strong>✨ No manual server start needed!</strong> npx automatically handles installation and startup.</p>
         </div>
       `,
       other: `
         <div class="agent-instructions">
-          <p>If your AI tool supports MCP, use one of these endpoints:</p>
+          <p>If your AI tool supports MCP with command execution (recommended):</p>
+          <div class="code-block">
+            <button class="copy-btn" data-copy='{"mcpServers":{"pointa":{"command":"npx","args":["-y","pointa-server"]}}}'>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Copy
+            </button>
+            <pre>{
+  "mcpServers": {
+    "pointa": {
+      "command": "npx",
+      "args": ["-y", "pointa-server"]
+    }
+  }
+}</pre>
+          </div>
+          <p class="note"><strong>✨ Automatic installation & startup!</strong></p>
+          
+          <p style="margin-top: 20px;">If your tool only supports HTTP endpoints, first run <code>pointa-server start</code>, then use:</p>
           <div class="code-block">
             <button class="copy-btn" data-copy="http://127.0.0.1:4242/mcp">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -313,18 +348,7 @@ const VibeOnboarding = {
             </button>
             <pre>http://127.0.0.1:4242/mcp</pre>
           </div>
-          <p class="note">Recommended HTTP endpoint</p>
-          <div class="code-block">
-            <button class="copy-btn" data-copy="http://127.0.0.1:4242/sse">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
-              </svg>
-              Copy
-            </button>
-            <pre>http://127.0.0.1:4242/sse</pre>
-          </div>
-          <p class="note">Alternative SSE endpoint</p>
+          <p class="note">HTTP endpoint (requires manual server start)</p>
         </div>
       `
     };
@@ -447,8 +471,8 @@ const VibeOnboarding = {
       <div class="onboarding-content">
         <div class="onboarding-card">
           <div class="onboarding-header">
-            <h2>Install Pointa Server</h2>
-            <p class="subtitle">Runs locally on localhost:4242 • Zero external dependencies</p>
+            <h2>Server Setup (Optional)</h2>
+            <p class="subtitle">The server will auto-install via npx when you configure your AI tool</p>
           </div>
           
           <div class="onboarding-body compact">
@@ -462,43 +486,36 @@ const VibeOnboarding = {
             
             <div class="installation-steps">
               <div class="install-step">
-                <div class="step-number">1</div>
+                <div class="step-number">✨</div>
                 <div class="step-content">
-                  <h4>Install globally</h4>
+                  <h4>Recommended: Use npx (automatic)</h4>
+                  <p>When you configure your AI tool in the next step, the npx command automatically handles installation and startup. <strong>Skip manual installation!</strong></p>
+                </div>
+              </div>
+              
+              <div class="install-step">
+                <div class="step-number">⚙️</div>
+                <div class="step-content">
+                  <h4>Optional: Manual installation (advanced)</h4>
+                  <p>Only needed if you want to manage the server yourself or your AI tool doesn't support npx.</p>
                   <div class="code-block">
-                    <button class="copy-btn" data-copy="npm install -g pointa-server">
+                    <button class="copy-btn" data-copy="npm install -g pointa-server && pointa-server start">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
                         <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
                       </svg>
                       Copy
                     </button>
-                    <pre>npm install -g pointa-server</pre>
+                    <pre>npm install -g pointa-server
+pointa-server start</pre>
                   </div>
                 </div>
               </div>
               
               <div class="install-step">
-                <div class="step-number">2</div>
+                <div class="step-number">✓</div>
                 <div class="step-content">
-                  <h4>Start server (runs on port 4242)</h4>
-                  <div class="code-block">
-                    <button class="copy-btn" data-copy="pointa-server start">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M3 11V3c0-.6.4-1 1-1h8" stroke="currentColor" stroke-width="1.5"/>
-                      </svg>
-                      Copy
-                    </button>
-                    <pre>pointa-server start</pre>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="install-step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                  <h4>Test connection</h4>
+                  <h4>Test connection (optional)</h4>
                   <div id="server-status" class="server-status">
                     <div class="status-idle">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -516,7 +533,7 @@ const VibeOnboarding = {
           
           <div class="onboarding-footer">
             <button class="btn-text back-btn">Back</button>
-            <button class="btn-primary next-btn" disabled>Continue to MCP Setup</button>
+            <button class="btn-primary next-btn">Continue to MCP Setup</button>
           </div>
           
           <div class="step-indicator">
