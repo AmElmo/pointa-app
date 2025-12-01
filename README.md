@@ -83,7 +83,11 @@ User clicks element → Extension captures context → Server stores annotation
 AI Agent ← MCP Protocol ← Server provides annotation data
 ```
 
+Annotate visually localhost like you would annotate a Figma screen
+
 ![Annotation flow](docs/images/annotation_flow_feature.gif)
+
+Then jump to your AI coding tool of choice and simply ask to work on thos annotations (voila!)
 
 ![MCP integration](docs/images/mcp_integration_feature.gif)
 
