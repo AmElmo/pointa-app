@@ -3010,6 +3010,16 @@ ${taskDescription}`;
                     <span class="bug-summary-value">${timeline.summary?.consoleErrors || 0}</span>
                     <span class="bug-summary-label">errors</span>
                   </div>
+                  <div class="bug-summary-stat ${(timeline.summary?.consoleWarnings || 0) > 0 ? 'bug-summary-warning' : ''}">
+                    <span class="bug-summary-icon">⚠️</span>
+                    <span class="bug-summary-value">${timeline.summary?.consoleWarnings || 0}</span>
+                    <span class="bug-summary-label">warnings</span>
+                  </div>
+                  <div class="bug-summary-stat">
+                    <span class="bug-summary-icon">💬</span>
+                    <span class="bug-summary-value">${timeline.summary?.consoleLogs || 0}</span>
+                    <span class="bug-summary-label">logs</span>
+                  </div>
                 </div>
               </div>
             ` : ''}
