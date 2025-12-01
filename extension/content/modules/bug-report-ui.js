@@ -151,6 +151,16 @@ const BugReportUI = {
               <span class="bug-summary-value">${timeline.summary.consoleErrors}</span>
               <span class="bug-summary-label">errors</span>
             </div>
+            <div class="bug-summary-stat ${timeline.summary.consoleWarnings > 0 ? 'bug-summary-warning' : ''}">
+              <span class="bug-summary-icon">⚠️</span>
+              <span class="bug-summary-value">${timeline.summary.consoleWarnings}</span>
+              <span class="bug-summary-label">warnings</span>
+            </div>
+            <div class="bug-summary-stat">
+              <span class="bug-summary-icon">💬</span>
+              <span class="bug-summary-value">${timeline.summary.consoleLogs}</span>
+              <span class="bug-summary-label">logs</span>
+            </div>
           </div>
           
           <div class="bug-timeline-tabs">
@@ -348,6 +358,8 @@ const BugReportUI = {
             <div class="bug-data-chips">
               ${recordingData.screenshot?.captured ? '<span class="bug-data-chip">✓ Screenshot (saved to disk)</span>' : '<span class="bug-data-chip">⚠ Screenshot (not captured)</span>'}
               <span class="bug-data-chip">✓ ${recordingData.timeline.summary.consoleErrors} Errors</span>
+              <span class="bug-data-chip">✓ ${recordingData.timeline.summary.consoleWarnings} Warnings</span>
+              <span class="bug-data-chip">✓ ${recordingData.timeline.summary.consoleLogs} Logs</span>
               <span class="bug-data-chip">✓ ${recordingData.timeline.summary.networkFailures} Failed Requests</span>
               <span class="bug-data-chip">✓ ${recordingData.timeline.summary.userInteractions} Interactions</span>
             </div>

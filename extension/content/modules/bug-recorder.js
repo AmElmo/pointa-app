@@ -680,7 +680,8 @@ const BugRecorder = {
       networkRequests: this.recordingData.network.length,
       networkFailures: this.recordingData.network.filter((e) => e.subtype === 'failed').length,
       consoleErrors: this.recordingData.console.filter((e) => e.type === 'console-error').length,
-      consoleWarnings: this.recordingData.console.filter((e) => e.type === 'console-warning').length
+      consoleWarnings: this.recordingData.console.filter((e) => e.type === 'console-warning').length,
+      consoleLogs: this.recordingData.console.filter((e) => e.type === 'console-log').length
     };
 
     return {
