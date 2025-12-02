@@ -3047,7 +3047,7 @@ body.sidebar-resizing * {
   border-bottom: 1px solid var(--theme-outline);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .sidebar-notification-center-top {
