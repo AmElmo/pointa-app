@@ -2410,9 +2410,9 @@ ${taskDescription}`;
       return a.status === 'pending' || !a.status;
     });
 
-    // For page navigation, include both active and to-review annotations
+    // For page navigation, only include active annotations (not in-review)
     const allNavigationAnnotations = allAnnotations.filter((a) => {
-      return a.status === 'pending' || !a.status || a.status === 'in-review';
+      return a.status === 'pending' || !a.status;
     });
 
     // Button should show when there are active annotations (for Ask AI button)
@@ -4036,11 +4036,9 @@ ${taskDescription}`;
 
     const allBugReports = await this.loadBugReports(); // Use loadBugReports which now uses file storage
 
-    // Include both active (pending) and in-review annotations
-    // Users might want to ask AI about in-review items or re-submit them
+    // Only include active (pending) annotations - in-review items should be in "To Review"
     const activeAnnotations = allAnnotations.filter((a) => a.status === 'pending' || !a.status);
-    const inReviewAnnotations = allAnnotations.filter((a) => a.status === 'in-review');
-    const allWorkableAnnotations = [...activeAnnotations, ...inReviewAnnotations];
+    const allWorkableAnnotations = activeAnnotations;
     // Include active, debugging, and in-review statuses
     const activeBugReports = allBugReports.filter((r) =>
       r.status === 'active' || r.status === 'debugging' || r.status === 'in-review'
