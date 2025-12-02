@@ -137,7 +137,22 @@ class LocalAnnotationsServer {
         }
 
         if (url) {
-          filtered = filtered.filter((a) => a.url === url);
+          // Smart URL filtering: support exact matches and base URL patterns
+          if (url.includes('*')) {
+            // Pattern matching with wildcard
+            const baseUrl = url.replace('*', '').replace(/\/$/, '');
+            filtered = filtered.filter((a) => a.url.startsWith(baseUrl));
+          } else {
+            // Try exact match first, then fallback to base URL pattern
+            const exactMatches = filtered.filter((a) => a.url === url);
+            if (exactMatches.length > 0) {
+              filtered = exactMatches;
+            } else {
+              // Treat as base URL pattern
+              const baseUrl = url.replace(/\/$/, '');
+              filtered = filtered.filter((a) => a.url.startsWith(baseUrl));
+            }
+          }
         }
 
         filtered = filtered.slice(0, parseInt(limit));
@@ -965,7 +980,7 @@ class LocalAnnotationsServer {
         tools: [
         {
           name: 'read_annotations',
-          description: 'Retrieves user-created visual annotations with pagination support. Returns annotation data with has_images flag and image_paths array for token efficiency (use get_annotation_images to retrieve actual image data when needed). Use url parameter to filter by project. MULTI-PROJECT SAFETY: This tool detects when annotations exist across multiple localhost projects and provides warnings with specific URL filtering guidance. CRITICAL WORKFLOW: (1) First call WITHOUT url parameter to see all projects, (2) Use get_project_context tool to determine current project, (3) Call again WITH url parameter (e.g., "http://localhost:3000/*") to filter for current project only. This prevents cross-project contamination where you might implement changes in wrong codebase. Use limit and offset parameters for pagination when handling large annotation sets. Use this tool when users mention: annotations, comments, feedback, suggestions, notes, marked changes, or visual issues they\'ve identified.',
+          description: 'Retrieves user-created visual annotations with pagination support. Returns annotation data with has_images flag and image_paths array for token efficiency (use get_annotation_images to retrieve actual image data when needed). Use url parameter to filter by project. MULTI-PROJECT SAFETY: This tool detects when annotations exist across multiple localhost projects and provides warnings with specific URL filtering guidance. CRITICAL WORKFLOW: (1) First call WITHOUT url parameter to see all projects, (2) Use get_project_context tool to determine current project, (3) Call again WITH url parameter (e.g., "http://localhost:3000") to filter for current project only. This prevents cross-project contamination where you might implement changes in wrong codebase. Use limit and offset parameters for pagination when handling large annotation sets. Use this tool when users mention: annotations, comments, feedback, suggestions, notes, marked changes, or visual issues they\'ve identified.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -990,7 +1005,7 @@ class LocalAnnotationsServer {
               },
               url: {
                 type: 'string',
-                description: 'Filter by specific localhost URL. Supports exact match (e.g., "http://localhost:3000/dashboard") or pattern match with base URL (e.g., "http://localhost:3000/" or "http://localhost:3000/*" to get all annotations from that project)'
+                description: 'Filter by localhost URL. Supports: (1) Exact match: "http://localhost:3000/dashboard" returns only that exact page, (2) Base URL pattern: "http://localhost:3000" or "http://localhost:3000/" returns all annotations from that project, (3) Wildcard pattern: "http://localhost:3000/*" explicitly matches all from that project. Smart matching: tries exact match first, then falls back to base URL pattern if no exact matches found.'
               }
             },
             additionalProperties: false
@@ -1788,13 +1803,23 @@ class LocalAnnotationsServer {
 
     if (url) {
       // Support both exact URL matching and base URL pattern matching
-      if (url.includes('*') || url.endsWith('/')) {
-        // Pattern matching: "http://localhost:3000/*" or "http://localhost:3000/"
+      if (url.includes('*')) {
+        // Pattern matching with wildcard: "http://localhost:3000/*"
         const baseUrl = url.replace('*', '').replace(/\/$/, '');
         filtered = filtered.filter((a) => a.url.startsWith(baseUrl));
       } else {
-        // Exact URL matching
-        filtered = filtered.filter((a) => a.url === url);
+        // Smart matching: try exact match first, then try as base URL pattern
+        const exactMatches = filtered.filter((a) => a.url === url);
+        
+        if (exactMatches.length > 0) {
+          // Found exact matches
+          filtered = exactMatches;
+        } else {
+          // No exact matches, treat as base URL pattern
+          // "http://localhost:3000" or "http://localhost:3000/" both match anything starting with that base
+          const baseUrl = url.replace(/\/$/, ''); // Remove trailing slash if present
+          filtered = filtered.filter((a) => a.url.startsWith(baseUrl));
+        }
       }
     }
 
