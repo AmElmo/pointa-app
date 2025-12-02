@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.3] - 2025-12-02
+
+### Changed
+- **BREAKING**: Simplified status filtering to match actual JSON values
+  - **Annotations**: Removed abstract `active` status. Use actual values: `pending` (new default), `in-review`, `done`, or `all`
+  - **Bug Reports**: Added `debugging` and `in-review` to status enum. Use actual values: `active` (default), `debugging`, `in-review`, `resolved`, or `all`
+  - Both systems now use exact status matching - no more grouping or special logic
+  - More intuitive: filter values match stored values exactly
+
 ## [0.2.2] - 2025-12-02
 
 ### Added
