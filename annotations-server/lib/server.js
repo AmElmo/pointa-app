@@ -132,6 +132,7 @@ class LocalAnnotationsServer {
 
         let filtered = annotations;
 
+        // Filter by status - use actual status values from JSON
         if (status && status !== 'all') {
           filtered = filtered.filter((a) => a.status === status);
         }
@@ -986,9 +987,9 @@ class LocalAnnotationsServer {
             properties: {
               status: {
                 type: 'string',
-                enum: ['pending', 'in-review', 'done', 'active', 'all'],
-                default: 'active',
-                description: 'Filter annotations by status. "active" returns both pending and in-review (default). "all" returns everything including done annotations.'
+                enum: ['pending', 'in-review', 'done', 'all'],
+                default: 'pending',
+                description: 'Filter annotations by their actual status value from JSON. "pending" (default), "in-review", "done", or "all" for everything.'
               },
               limit: {
                 type: 'number',
@@ -1067,9 +1068,9 @@ class LocalAnnotationsServer {
             properties: {
               status: {
                 type: 'string',
-                enum: ['active', 'resolved', 'all'],
+                enum: ['active', 'debugging', 'in-review', 'resolved', 'all'],
                 default: 'active',
-                description: 'Filter bug reports by status. "active" returns open bugs needing attention (includes active, debugging, and in-review statuses). "resolved" returns fixed bugs. "all" returns everything.'
+                description: 'Filter bug reports by their actual status value from JSON. "active" (default), "debugging", "in-review", "resolved", or "all" for everything.'
               },
               limit: {
                 type: 'number',
@@ -1787,19 +1788,14 @@ class LocalAnnotationsServer {
 
   async readAnnotations(args) {
     const annotations = await this.loadAnnotations();
-    const { status = 'active', limit = 50, offset = 0, url } = args;
+    const { status = 'pending', limit = 50, offset = 0, url } = args;
 
     let filtered = annotations;
 
-    // Filter by status
-    if (status === 'active') {
-      // Return both pending and in-review (exclude done)
-      filtered = filtered.filter((a) => a.status === 'pending' || a.status === 'in-review');
-    } else if (status !== 'all') {
-      // Filter by specific status (pending, in-review, or done)
+    // Filter by status - use actual status values from JSON
+    if (status !== 'all') {
       filtered = filtered.filter((a) => a.status === status);
     }
-    // If status is 'all', don't filter at all
 
     if (url) {
       // Support both exact URL matching and base URL pattern matching
@@ -2084,10 +2080,8 @@ class LocalAnnotationsServer {
 
     let filtered = bugReports;
 
-    // Filter by status - 'active' includes both 'active' and 'debugging'
-    if (status === 'active') {
-      filtered = filtered.filter((r) => r.status === 'active' || r.status === 'debugging');
-    } else if (status !== 'all') {
+    // Filter by status - use actual status values from JSON
+    if (status !== 'all') {
       filtered = filtered.filter((r) => r.status === status);
     }
 
