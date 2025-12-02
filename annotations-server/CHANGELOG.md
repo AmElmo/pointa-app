@@ -7,10 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-12-02
+
 ### Added
 - Automatic update check against GitHub releases
 - Version information in health endpoint
 - Dynamic version reading from package.json in CLI
+
+### Improved
+- Smart URL filtering: `read_annotations` now intelligently matches URLs
+  - Base URL pattern: `http://localhost:3456` now automatically matches all annotations from that project (e.g., `http://localhost:3456/`, `http://localhost:3456/dashboard`, etc.)
+  - Exact match fallback: If exact URL matches exist (e.g., `http://localhost:3456` annotation), returns only those
+  - Explicit wildcard: `http://localhost:3456/*` continues to work as before
+  - No longer requires trailing slash or wildcard for project-wide filtering
+- Both MCP tool and REST API endpoints now use the smart URL filtering logic
 
 ## [0.2.1] - 2025-12-01
 
