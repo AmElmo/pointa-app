@@ -1010,9 +1010,9 @@ class LocalAnnotationsServer {
             properties: {
               status: {
                 type: 'string',
-                enum: ['pending', 'in-review', 'done', 'all'],
+                enum: ['pending', 'in-review'],
                 default: 'pending',
-                description: 'Filter annotations by their actual status value from JSON. "pending" (default), "in-review", "done", or "all" for everything.'
+                description: 'Filter annotations by status. "pending" (default) or "in-review".'
               },
               limit: {
                 type: 'number',
@@ -1810,20 +1810,16 @@ class LocalAnnotationsServer {
   }
 
   async readAnnotations(args) {
-    let annotations = await this.loadAnnotations();
+    const annotations = await this.loadAnnotations();
     const { status = 'pending', limit = 50, offset = 0, url } = args;
-
-    // If requesting 'all' or 'done' status, include archived annotations
-    if (status === 'all' || status === 'done') {
-      const archive = await this.loadArchive();
-      annotations = [...annotations, ...archive];
-    }
 
     let filtered = annotations;
 
-    // Filter by status - use actual status values from JSON
-    if (status !== 'all') {
-      filtered = filtered.filter((a) => a.status === status);
+    // Filter by status - only pending and in-review exist in main file now
+    if (status === 'pending') {
+      filtered = filtered.filter((a) => a.status === 'pending' || !a.status);
+    } else if (status === 'in-review') {
+      filtered = filtered.filter((a) => a.status === 'in-review');
     }
 
     if (url) {
