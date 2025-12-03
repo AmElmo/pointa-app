@@ -34,7 +34,7 @@ const IMAGES_DIR = path.join(DATA_DIR, 'images');
 const INSPIRATIONS_DIR = path.join(DATA_DIR, 'inspirations');
 const INSPIRATIONS_FILE = path.join(DATA_DIR, 'inspirations.json');
 const INSPIRATION_SCREENSHOTS_DIR = path.join(DATA_DIR, 'inspiration_screenshots');
-const BUG_REPORTS_FILE = path.join(DATA_DIR, 'bug_reports.json');
+const ISSUE_REPORTS_FILE = path.join(DATA_DIR, 'issue_reports.json');
 const BUG_SCREENSHOTS_DIR = path.join(DATA_DIR, 'bug_screenshots');
 
 // Configure multer for memory storage (we'll save manually for better control)
@@ -72,7 +72,7 @@ class LocalAnnotationsServer {
     this.transports = {}; // Track transport sessions
     this.connections = new Set(); // Track HTTP connections
     this.saveLock = Promise.resolve(); // Serialize save operations to prevent race conditions
-    this.bugReportsSaveLock = Promise.resolve(); // Serialize bug reports save operations
+    this.issueReportsSaveLock = Promise.resolve(); // Serialize issue reports save operations
     this.inspirationsSaveLock = Promise.resolve(); // Serialize inspirations save operations
 
     this.setupExpress();
@@ -673,10 +673,10 @@ class LocalAnnotationsServer {
     // Bug Reports API endpoints
     this.app.get('/api/bug-reports', async (req, res) => {
       try {
-        const bugReports = await this.loadBugReports();
+        const issueReports = await this.loadBugReports();
         const { status, url, limit = 50 } = req.query;
 
-        let filtered = bugReports;
+        let filtered = issueReports;
 
         if (status && status !== 'all') {
           filtered = filtered.filter((r) => r.status === status);
@@ -689,9 +689,9 @@ class LocalAnnotationsServer {
         filtered = filtered.slice(0, parseInt(limit));
 
         res.json({
-          bug_reports: filtered,
+          issue_reports: filtered,
           count: filtered.length,
-          total: bugReports.length
+          total: issueReports.length
         });
       } catch (error) {
         console.error('Error loading bug reports:', error);
@@ -711,22 +711,22 @@ class LocalAnnotationsServer {
           return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        const bugReports = await this.loadBugReports();
-        const existingIndex = bugReports.findIndex((r) => r.id === bugReport.id);
+        const issueReports = await this.loadBugReports();
+        const existingIndex = issueReports.findIndex((r) => r.id === bugReport.id);
 
         if (existingIndex >= 0) {
 
-          bugReports[existingIndex] = { ...bugReports[existingIndex], ...bugReport, updated: new Date().toISOString() };
+          issueReports[existingIndex] = { ...issueReports[existingIndex], ...bugReport, updated: new Date().toISOString() };
         } else {
 
-          bugReports.push({
+          issueReports.push({
             ...bugReport,
             created: bugReport.created || new Date().toISOString(),
             updated: new Date().toISOString()
           });
         }
 
-        await this.saveBugReports(bugReports);
+        await this.saveBugReports(issueReports);
 
 
 
@@ -743,21 +743,21 @@ class LocalAnnotationsServer {
         const { id } = req.params;
         const updates = req.body;
 
-        const bugReports = await this.loadBugReports();
-        const index = bugReports.findIndex((r) => r.id === id);
+        const issueReports = await this.loadBugReports();
+        const index = issueReports.findIndex((r) => r.id === id);
 
         if (index === -1) {
           return res.status(404).json({ error: 'Bug report not found' });
         }
 
-        bugReports[index] = {
-          ...bugReports[index],
+        issueReports[index] = {
+          ...issueReports[index],
           ...updates,
           updated: new Date().toISOString()
         };
 
-        await this.saveBugReports(bugReports);
-        res.json({ success: true, bug_report: bugReports[index] });
+        await this.saveBugReports(issueReports);
+        res.json({ success: true, bug_report: issueReports[index] });
       } catch (error) {
         console.error('Error updating bug report:', error);
         res.status(500).json({ error: 'Failed to update bug report' });
@@ -768,17 +768,17 @@ class LocalAnnotationsServer {
       try {
         const { id } = req.params;
 
-        const bugReports = await this.loadBugReports();
-        const index = bugReports.findIndex((r) => r.id === id);
+        const issueReports = await this.loadBugReports();
+        const index = issueReports.findIndex((r) => r.id === id);
 
         if (index === -1) {
           return res.status(404).json({ error: 'Bug report not found' });
         }
 
-        const deletedReport = bugReports[index];
-        bugReports.splice(index, 1);
+        const deletedReport = issueReports[index];
+        issueReports.splice(index, 1);
 
-        await this.saveBugReports(bugReports);
+        await this.saveBugReports(issueReports);
 
         // Also delete associated screenshot if it exists
         if (deletedReport.visual?.screenshot?.filename) {
@@ -1088,8 +1088,8 @@ class LocalAnnotationsServer {
           }
         },
         {
-          name: 'read_bug_reports',
-          description: 'Retrieves bug reports with full timeline data including console errors, network failures, and user interactions captured during recording. Use this tool when users mention: bugs, errors, crashes, issues, failures, or when you need to debug problems. Each bug report includes a detailed timeline showing the sequence of events (user clicks, API calls, console errors) that led to the bug, making it easier to identify root causes. Bug reports have statuses: "active" (needs attention - default), "debugging" (awaiting re-run with new logs), or "in-review" (fix ready for testing). CRITICAL: If a bug has needs_more_logging=true, do NOT attempt another fix. Instead, use mark_bug_needs_rerun to add console.log statements, debugging output, or instrumentation to gather more information about why the previous fix failed. The failed_fix_attempts counter shows how many fixes have been tried.',
+          name: 'read_issue_reports',
+          description: 'Retrieves issue reports (bugs and performance investigations) with full timeline data including console errors, network failures, and user interactions captured during recording. Use this tool when users mention: bugs, errors, crashes, issues, failures, performance problems, or when you need to debug problems. Each report includes a detailed timeline showing the sequence of events that led to the issue, making it easier to identify root causes. Issue reports have statuses: "active" (needs attention - default), "debugging" (awaiting re-run with new logs), or "in-review" (fix ready for testing). CRITICAL: If an issue has needs_more_logging=true, do NOT attempt another fix. Instead, use mark_issue_needs_rerun to add console.log statements, debugging output, or instrumentation to gather more information about why the previous fix failed. The failed_fix_attempts counter shows how many fixes have been tried.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -1097,32 +1097,32 @@ class LocalAnnotationsServer {
                 type: 'string',
                 enum: ['active', 'debugging', 'in-review'],
                 default: 'active',
-                description: 'Filter bug reports by status. "active" (default - needs attention), "debugging" (awaiting replay with new logs), or "in-review" (fix ready for testing).'
+                description: 'Filter issue reports by status. "active" (default - needs attention), "debugging" (awaiting replay with new logs), or "in-review" (fix ready for testing).'
               },
               limit: {
                 type: 'number',
                 default: 50,
                 minimum: 1,
                 maximum: 200,
-                description: 'Maximum number of bug reports to return'
+                description: 'Maximum number of issue reports to return'
               },
               url: {
                 type: 'string',
-                description: 'Filter by specific localhost URL where bug occurred'
+                description: 'Filter by specific localhost URL where issue occurred'
               }
             },
             additionalProperties: false
           }
         },
         {
-          name: 'mark_bug_needs_rerun',
-          description: 'Mark bug for auto-replay after adding debugging/logging code. Use this when you\'ve added console.log, debugging statements, or instrumentation to gather more information about a bug. The Chrome extension will automatically replay the original user actions to capture new logs and data. This is different from mark_bug_for_review - use this when you need MORE information (added logging), not when you think you\'ve fixed it.',
+          name: 'mark_issue_needs_rerun',
+          description: 'Mark issue (bug or performance) for auto-replay after adding debugging/logging code. Use this when you\'ve added console.log, debugging statements, or instrumentation to gather more information about an issue. The Chrome extension will automatically replay the original user actions to capture new logs and data. This is different from mark_issue_for_review - use this when you need MORE information (added logging), not when you think you\'ve fixed it.',
           inputSchema: {
             type: 'object',
             properties: {
               id: {
                 type: 'string',
-                description: 'Bug report ID'
+                description: 'Issue report ID (bug or performance investigation)'
               },
               debug_notes: {
                 type: 'string',
@@ -1138,14 +1138,14 @@ class LocalAnnotationsServer {
           }
         },
         {
-          name: 'mark_bug_for_review',
-          description: 'Mark bug as fixed and ready for user testing. Use this when you have implemented an actual fix (not just debugging). The user will test the fix and mark it as resolved or reopen it. This is different from mark_bug_needs_rerun - use this when you think you\'ve FIXED the bug, not when you just added logging.',
+          name: 'mark_issue_for_review',
+          description: 'Mark issue (bug or performance) as fixed and ready for user testing. Use this when you have implemented an actual fix (not just debugging). The user will test the fix and mark it as resolved or reopen it. This is different from mark_issue_needs_rerun - use this when you think you\'ve FIXED the issue, not when you just added logging.',
           inputSchema: {
             type: 'object',
             properties: {
               id: {
                 type: 'string',
-                description: 'Bug report ID'
+                description: 'Issue report ID (bug or performance investigation)'
               },
               resolution_notes: {
                 type: 'string',
@@ -1162,18 +1162,18 @@ class LocalAnnotationsServer {
           }
         },
         {
-          name: 'mark_bug_resolved',
-          description: 'Marks a bug report as "resolved" after successfully fixing the issue. Use this tool when: (1) You have identified and fixed the bug, (2) The fix has been implemented and tested, (3) You want to mark the bug as resolved so it no longer appears in active reports. This helps track which bugs have been addressed and maintains a clear record of resolved issues.',
+          name: 'mark_issue_resolved',
+          description: 'Marks an issue report (bug or performance investigation) as "resolved" after successfully fixing it. Use this tool when: (1) You have identified and fixed the issue, (2) The fix has been implemented and tested, (3) You want to mark the issue as resolved so it no longer appears in active reports and is automatically archived. This helps track which issues have been addressed and maintains a clear record of resolved issues.',
           inputSchema: {
             type: 'object',
             properties: {
               id: {
                 type: 'string',
-                description: 'Bug report ID to mark as resolved'
+                description: 'Issue report ID (bug or performance investigation)'
               },
               resolution: {
                 type: 'string',
-                description: 'Optional description of how the bug was resolved'
+                description: 'Optional description of how the issue was resolved'
               }
             },
             required: ['id'],
@@ -1263,17 +1263,17 @@ class LocalAnnotationsServer {
               };
             }
 
-          case 'read_bug_reports':{
-              const result = await this.readBugReports(args || {});
+          case 'read_issue_reports':{
+              const result = await this.readIssueReports(args || {});
               return {
                 content: [
                 {
                   type: 'text',
                   text: JSON.stringify({
-                    tool: 'read_bug_reports',
+                    tool: 'read_issue_reports',
                     status: 'success',
-                    data: result.bugReports,
-                    count: result.bugReports.length,
+                    data: result.issueReports,
+                    count: result.issueReports.length,
                     total: result.total,
                     filter_applied: args?.status || 'active',
                     timestamp: new Date().toISOString()
@@ -1283,14 +1283,14 @@ class LocalAnnotationsServer {
               };
             }
 
-          case 'mark_bug_needs_rerun':{
-              const result = await this.markBugNeedsRerun(args);
+          case 'mark_issue_needs_rerun':{
+              const result = await this.markIssueNeedsRerun(args);
               return {
                 content: [
                 {
                   type: 'text',
                   text: JSON.stringify({
-                    tool: 'mark_bug_needs_rerun',
+                    tool: 'mark_issue_needs_rerun',
                     status: 'success',
                     data: result,
                     timestamp: new Date().toISOString()
@@ -1300,14 +1300,14 @@ class LocalAnnotationsServer {
               };
             }
 
-          case 'mark_bug_for_review':{
-              const result = await this.markBugForReview(args);
+          case 'mark_issue_for_review':{
+              const result = await this.markIssueForReview(args);
               return {
                 content: [
                 {
                   type: 'text',
                   text: JSON.stringify({
-                    tool: 'mark_bug_for_review',
+                    tool: 'mark_issue_for_review',
                     status: 'success',
                     data: result,
                     timestamp: new Date().toISOString()
@@ -1317,14 +1317,14 @@ class LocalAnnotationsServer {
               };
             }
 
-          case 'mark_bug_resolved':{
-              const result = await this.markBugResolved(args);
+          case 'mark_issue_resolved':{
+              const result = await this.markIssueResolved(args);
               return {
                 content: [
                 {
                   type: 'text',
                   text: JSON.stringify({
-                    tool: 'mark_bug_resolved',
+                    tool: 'mark_issue_resolved',
                     status: 'success',
                     data: result,
                     timestamp: new Date().toISOString()
@@ -1498,11 +1498,11 @@ class LocalAnnotationsServer {
 
   async loadBugReports() {
     try {
-      if (!existsSync(BUG_REPORTS_FILE)) {
+      if (!existsSync(ISSUE_REPORTS_FILE)) {
         await this.ensureBugReportsFile();
         return [];
       }
-      const data = await readFile(BUG_REPORTS_FILE, 'utf8');
+      const data = await readFile(ISSUE_REPORTS_FILE, 'utf8');
 
       // Handle empty or corrupted file
       if (!data || data.trim() === '') {
@@ -1516,7 +1516,7 @@ class LocalAnnotationsServer {
       } catch (parseError) {
         console.error('Corrupted bug reports JSON file, reinitializing:', parseError);
         // Backup corrupted file
-        const backupFile = BUG_REPORTS_FILE + '.corrupted.' + Date.now();
+        const backupFile = ISSUE_REPORTS_FILE + '.corrupted.' + Date.now();
         await writeFile(backupFile, data);
 
 
@@ -1530,43 +1530,43 @@ class LocalAnnotationsServer {
     }
   }
 
-  async saveBugReports(bugReports) {
+  async saveBugReports(issueReports) {
     // Serialize all save operations to prevent race conditions
-    this.bugReportsSaveLock = this.bugReportsSaveLock.then(async () => {
-      return this._saveBugReportsInternal(bugReports);
+    this.issueReportsSaveLock = this.issueReportsSaveLock.then(async () => {
+      return this._saveBugReportsInternal(issueReports);
     });
 
-    return this.bugReportsSaveLock;
+    return this.issueReportsSaveLock;
   }
 
-  async _saveBugReportsInternal(bugReports) {
+  async _saveBugReportsInternal(issueReports) {
 
-    const jsonData = JSON.stringify(bugReports, null, 2);
+    const jsonData = JSON.stringify(issueReports, null, 2);
 
     try {
       // Ensure directory exists right before operations  
-      const dataDir = path.dirname(BUG_REPORTS_FILE);
+      const dataDir = path.dirname(ISSUE_REPORTS_FILE);
       if (!existsSync(dataDir)) {
 
         await mkdir(dataDir, { recursive: true });
       }
 
       // Atomic write: write to temp file first, then rename
-      const tempFile = BUG_REPORTS_FILE + '.tmp';
+      const tempFile = ISSUE_REPORTS_FILE + '.tmp';
 
       await writeFile(tempFile, jsonData);
 
       // Rename temp file to actual file (atomic operation)
 
       const fs = await import('fs');
-      await fs.promises.rename(tempFile, BUG_REPORTS_FILE);
+      await fs.promises.rename(tempFile, ISSUE_REPORTS_FILE);
 
 
     } catch (error) {
       console.error('Error saving bug reports:', error);
 
       // Clean up temp file if it exists
-      const tempFile = BUG_REPORTS_FILE + '.tmp';
+      const tempFile = ISSUE_REPORTS_FILE + '.tmp';
       try {
         if (existsSync(tempFile)) {
           const fs = await import('fs');
@@ -1580,7 +1580,7 @@ class LocalAnnotationsServer {
       // Fallback: try direct write without atomic operation
 
       try {
-        await writeFile(BUG_REPORTS_FILE, jsonData);
+        await writeFile(ISSUE_REPORTS_FILE, jsonData);
 
         return;
       } catch (fallbackError) {
@@ -1592,7 +1592,7 @@ class LocalAnnotationsServer {
   }
 
   async ensureBugReportsFile() {
-    const dataDir = path.dirname(BUG_REPORTS_FILE);
+    const dataDir = path.dirname(ISSUE_REPORTS_FILE);
     if (!existsSync(dataDir)) {
 
       await mkdir(dataDir, { recursive: true });
@@ -1604,14 +1604,14 @@ class LocalAnnotationsServer {
       await mkdir(BUG_SCREENSHOTS_DIR, { recursive: true });
     }
 
-    if (!existsSync(BUG_REPORTS_FILE)) {
+    if (!existsSync(ISSUE_REPORTS_FILE)) {
 
-      await writeFile(BUG_REPORTS_FILE, JSON.stringify([], null, 2));
+      await writeFile(ISSUE_REPORTS_FILE, JSON.stringify([], null, 2));
     } else {
       // File exists - log current bug report count for verification
       try {
-        const existingData = await readFile(BUG_REPORTS_FILE, 'utf8');
-        const bugReports = JSON.parse(existingData || '[]');
+        const existingData = await readFile(ISSUE_REPORTS_FILE, 'utf8');
+        const issueReports = JSON.parse(existingData || '[]');
 
       } catch (error) {
         console.warn(`Warning: Could not read existing bug reports file: ${error.message}`);
@@ -2103,11 +2103,11 @@ class LocalAnnotationsServer {
     }
   }
 
-  async readBugReports(args) {
-    const bugReports = await this.loadBugReports();
+  async readIssueReports(args) {
+    const issueReports = await this.loadBugReports();
     const { status = 'active', limit = 50, url } = args;
 
-    let filtered = bugReports;
+    let filtered = issueReports;
 
     // Filter by status - only active, debugging, and in-review exist in main file now
     if (status === 'active') {
@@ -2131,23 +2131,23 @@ class LocalAnnotationsServer {
     const paginated = filtered.slice(0, limit);
 
     return {
-      bugReports: paginated,
+      issueReports: paginated,
       total: total,
       count: paginated.length
     };
   }
 
-  async markBugNeedsRerun(args) {
+  async markIssueNeedsRerun(args) {
     const { id, debug_notes, what_to_look_for } = args;
 
-    const bugReports = await this.loadBugReports();
-    const index = bugReports.findIndex((r) => r.id === id);
+    const issueReports = await this.loadBugReports();
+    const index = issueReports.findIndex((r) => r.id === id);
 
     if (index === -1) {
       throw new Error(`Bug report with id ${id} not found`);
     }
 
-    const bugReport = bugReports[index];
+    const bugReport = issueReports[index];
     const previousStatus = bugReport.status;
 
     // Ensure ai_actions array exists
@@ -2168,7 +2168,7 @@ class LocalAnnotationsServer {
     bugReport.needs_more_logging = false;
     bugReport.updated = new Date().toISOString();
 
-    await this.saveBugReports(bugReports);
+    await this.saveBugReports(issueReports);
 
     return {
       id,
@@ -2186,17 +2186,17 @@ class LocalAnnotationsServer {
     };
   }
 
-  async markBugForReview(args) {
+  async markIssueForReview(args) {
     const { id, resolution_notes, changes_made } = args;
 
-    const bugReports = await this.loadBugReports();
-    const index = bugReports.findIndex((r) => r.id === id);
+    const issueReports = await this.loadBugReports();
+    const index = issueReports.findIndex((r) => r.id === id);
 
     if (index === -1) {
       throw new Error(`Bug report with id ${id} not found`);
     }
 
-    const bugReport = bugReports[index];
+    const bugReport = issueReports[index];
     const previousStatus = bugReport.status;
 
     // Ensure ai_actions array exists
@@ -2217,7 +2217,7 @@ class LocalAnnotationsServer {
     bugReport.needs_more_logging = false;
     bugReport.updated = new Date().toISOString();
 
-    await this.saveBugReports(bugReports);
+    await this.saveBugReports(issueReports);
 
     return {
       id,
@@ -2234,17 +2234,17 @@ class LocalAnnotationsServer {
     };
   }
 
-  async markBugResolved(args) {
+  async markIssueResolved(args) {
     const { id, resolution } = args;
 
-    const bugReports = await this.loadBugReports();
-    const index = bugReports.findIndex((r) => r.id === id);
+    const issueReports = await this.loadBugReports();
+    const index = issueReports.findIndex((r) => r.id === id);
 
     if (index === -1) {
       throw new Error(`Bug report with id ${id} not found`);
     }
 
-    const bugReport = bugReports[index];
+    const bugReport = issueReports[index];
     const previousStatus = bugReport.status;
 
     // Update status to resolved
@@ -2257,8 +2257,8 @@ class LocalAnnotationsServer {
     }
 
     // Remove from main bug reports array
-    bugReports.splice(index, 1);
-    await this.saveBugReports(bugReports);
+    issueReports.splice(index, 1);
+    await this.saveBugReports(issueReports);
 
     // Add to unified archive with type marker
     const archive = await this.loadArchive();

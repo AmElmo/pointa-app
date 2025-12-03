@@ -179,7 +179,7 @@ class PointaBackground {
 
         case 'getBugReports':
           this.getBugReports(request.status, request.url).
-          then((bugReports) => sendResponse({ success: true, bugReports })).
+          then((issueReports) => sendResponse({ success: true, issueReports })).
           catch((error) => sendResponse({ success: false, error: error.message }));
           break;
 
@@ -1036,7 +1036,7 @@ class PointaBackground {
       }
 
       const result = await response.json();
-      return result.bug_reports || [];
+      return result.issue_reports || [];
     } catch (error) {
       console.error('[Background] Error getting bug reports from API:', error);
       // Service worker cannot directly access file storage - return empty array
@@ -1061,7 +1061,7 @@ class PointaBackground {
       }
 
       const result = await response.json();
-      const apiBugReports = result.bug_reports || [];
+      const apiBugReports = result.issue_reports || [];
 
       // Note: In service worker context, we don't directly write to file storage
       // The API server handles all file operations

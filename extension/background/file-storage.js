@@ -7,10 +7,10 @@ class FileStorageManager {
     this.dbVersion = 1;
     this.db = null;
     this.fileHandle = null;
-    this.bugReportsFileHandle = null;
+    this.issueReportsFileHandle = null;
     this.directoryHandle = null;
     this.defaultFileName = 'annotations.json';
-    this.bugReportsFileName = 'bug_reports.json';
+    this.issueReportsFileName = 'issue_reports.json';
   }
 
   /**
@@ -40,7 +40,7 @@ class FileStorageManager {
   /**
    * Save file handle to IndexedDB
    */
-  async saveFileHandle(directoryHandle, fileHandle, bugReportsFileHandle) {
+  async saveFileHandle(directoryHandle, fileHandle, issueReportsFileHandle) {
     await this.initDB();
 
     const tx = this.db.transaction('fileHandles', 'readwrite');
@@ -48,14 +48,14 @@ class FileStorageManager {
 
     await store.put(directoryHandle, 'directoryHandle');
     await store.put(fileHandle, 'fileHandle');
-    await store.put(bugReportsFileHandle, 'bugReportsFileHandle');
+    await store.put(issueReportsFileHandle, 'issueReportsFileHandle');
     await store.put(new Date().toISOString(), 'lastAccessTime');
 
     await tx.complete;
 
     this.directoryHandle = directoryHandle;
     this.fileHandle = fileHandle;
-    this.bugReportsFileHandle = bugReportsFileHandle;
+    this.issueReportsFileHandle = issueReportsFileHandle;
 
 
   }
@@ -72,7 +72,7 @@ class FileStorageManager {
 
       const directoryHandle = await store.get('directoryHandle');
       const fileHandle = await store.get('fileHandle');
-      const bugReportsFileHandle = await store.get('bugReportsFileHandle');
+      const issueReportsFileHandle = await store.get('issueReportsFileHandle');
 
 
 
@@ -81,14 +81,14 @@ class FileStorageManager {
       if (directoryHandle && fileHandle) {
         this.directoryHandle = directoryHandle;
         this.fileHandle = fileHandle;
-        this.bugReportsFileHandle = bugReportsFileHandle; // May be null for old installations
+        this.issueReportsFileHandle = issueReportsFileHandle; // May be null for old installations
 
 
 
-        if (bugReportsFileHandle) {
+        if (issueReportsFileHandle) {
 
         }
-        return { directoryHandle, fileHandle, bugReportsFileHandle };
+        return { directoryHandle, fileHandle, issueReportsFileHandle };
       }
 
 
@@ -247,19 +247,19 @@ class FileStorageManager {
         console.warn('[FileStorage] Could not initialize file:', initError);
       }
 
-      // Get or create the bug_reports.json file inside .pointa
+      // Get or create the issue_reports.json file inside .pointa
 
-      const bugReportsFileHandle = await pointaHandle.getFileHandle(this.bugReportsFileName, {
+      const issueReportsFileHandle = await pointaHandle.getFileHandle(this.issueReportsFileName, {
         create: true
       });
 
 
       // Initialize bug reports file with empty array if it's new
       try {
-        const bugFile = await bugReportsFileHandle.getFile();
+        const bugFile = await issueReportsFileHandle.getFile();
         if (bugFile.size === 0) {
 
-          const writable = await bugReportsFileHandle.createWritable();
+          const writable = await issueReportsFileHandle.createWritable();
           await writable.write(JSON.stringify([], null, 2));
           await writable.close();
 
@@ -270,7 +270,7 @@ class FileStorageManager {
 
       // Save handles for future use (save the .pointa handle, not Documents)
 
-      await this.saveFileHandle(pointaHandle, fileHandle, bugReportsFileHandle);
+      await this.saveFileHandle(pointaHandle, fileHandle, issueReportsFileHandle);
 
 
       const successResult = {
@@ -504,9 +504,9 @@ class FileStorageManager {
    */
   async readBugReports() {
     // Load handles if not already loaded
-    if (!this.bugReportsFileHandle) {
+    if (!this.issueReportsFileHandle) {
       const handles = await this.loadFileHandle();
-      if (!handles || !handles.bugReportsFileHandle) {
+      if (!handles || !handles.issueReportsFileHandle) {
         // For backward compatibility, return empty array if bug reports file not configured
 
         return [];
@@ -514,7 +514,7 @@ class FileStorageManager {
     }
 
     // Check if we can use file operations (not available in service workers)
-    if (!this.bugReportsFileHandle || typeof this.bugReportsFileHandle.getFile !== 'function') {
+    if (!this.issueReportsFileHandle || typeof this.issueReportsFileHandle.getFile !== 'function') {
       console.warn('[FileStorage] File operations not available in service worker context');
       return [];
     }
@@ -533,7 +533,7 @@ class FileStorageManager {
     }
 
     try {
-      const file = await this.bugReportsFileHandle.getFile();
+      const file = await this.issueReportsFileHandle.getFile();
       const contents = await file.text();
 
       if (!contents || contents.trim() === '') {
@@ -541,9 +541,9 @@ class FileStorageManager {
         return [];
       }
 
-      const bugReports = JSON.parse(contents);
+      const issueReports = JSON.parse(contents);
 
-      return bugReports;
+      return issueReports;
     } catch (error) {
       if (error instanceof SyntaxError) {
         console.error('[FileStorage] Invalid JSON in bug reports file, returning empty array');
@@ -556,17 +556,17 @@ class FileStorageManager {
   /**
    * Write bug reports to file
    */
-  async writeBugReports(bugReports) {
+  async writeBugReports(issueReports) {
     // Load handles if not already loaded
-    if (!this.bugReportsFileHandle) {
+    if (!this.issueReportsFileHandle) {
       const handles = await this.loadFileHandle();
-      if (!handles || !handles.bugReportsFileHandle) {
+      if (!handles || !handles.issueReportsFileHandle) {
         throw new Error('Bug reports file storage not configured. Please setup storage from settings first.');
       }
     }
 
     // Check if we can use file operations (not available in service workers)
-    if (!this.bugReportsFileHandle || typeof this.bugReportsFileHandle.createWritable !== 'function') {
+    if (!this.issueReportsFileHandle || typeof this.issueReportsFileHandle.createWritable !== 'function') {
       console.warn('[FileStorage] File operations not available in service worker context');
       throw new Error('File operations not available in this context');
     }
@@ -586,10 +586,10 @@ class FileStorageManager {
 
     try {
       // Create a writable stream
-      const writable = await this.bugReportsFileHandle.createWritable();
+      const writable = await this.issueReportsFileHandle.createWritable();
 
       // Write the bug reports as formatted JSON
-      const content = JSON.stringify(bugReports, null, 2);
+      const content = JSON.stringify(issueReports, null, 2);
       await writable.write(content);
 
       // Close the file
@@ -614,14 +614,14 @@ class FileStorageManager {
 
     await store.delete('directoryHandle');
     await store.delete('fileHandle');
-    await store.delete('bugReportsFileHandle');
+    await store.delete('issueReportsFileHandle');
     await store.delete('lastAccessTime');
 
     await tx.complete;
 
     this.directoryHandle = null;
     this.fileHandle = null;
-    this.bugReportsFileHandle = null;
+    this.issueReportsFileHandle = null;
 
 
   }

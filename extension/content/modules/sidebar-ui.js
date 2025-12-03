@@ -2322,9 +2322,9 @@ ${taskDescription}`;
     const annotations = pointa.annotations || [];
 
     // Load bug reports
-    const bugReports = await this.loadBugReports();
+    const issueReports = await this.loadBugReports();
     // Include active, debugging, and in-review statuses
-    const activeBugReports = bugReports.filter((r) =>
+    const activeBugReports = issueReports.filter((r) =>
       r.status === 'active' || r.status === 'debugging' || r.status === 'in-review'
     );
 
@@ -2658,7 +2658,7 @@ ${taskDescription}`;
         return [];
       }
 
-      const bugReports = response.bugReports || [];
+      const issueReports = response.issueReports || [];
 
 
 
@@ -2667,7 +2667,7 @@ ${taskDescription}`;
 
 
 
-      return bugReports;
+      return issueReports;
     } catch (error) {
       console.error('[Sidebar] Error loading bug reports:', error);
       return [];
@@ -2680,9 +2680,9 @@ ${taskDescription}`;
    * @returns {Promise<string>} HTML string
    */
   async buildBugReportsList(pointa) {
-    const bugReports = await this.loadBugReports();
+    const issueReports = await this.loadBugReports();
     // Include active, debugging, and in-review statuses
-    const activeBugReports = bugReports.filter((r) =>
+    const activeBugReports = issueReports.filter((r) =>
     r.status === 'active' || r.status === 'debugging' || r.status === 'in-review'
     );
 
@@ -2914,8 +2914,8 @@ ${taskDescription}`;
   async showBugReportDetails(bugId) {
     try {
       // Load bug reports from storage
-      const bugReports = await this.loadBugReports();
-      const bugReport = bugReports.find((r) => r.id === bugId);
+      const issueReports = await this.loadBugReports();
+      const bugReport = issueReports.find((r) => r.id === bugId);
 
       if (!bugReport) {
         console.error('[Sidebar] Bug report not found:', bugId);
@@ -3177,8 +3177,8 @@ ${taskDescription}`;
    */
   async markBugResolved(bugId) {
     try {
-      const bugReports = await this.loadBugReports();
-      const bug = bugReports.find((r) => r.id === bugId);
+      const issueReports = await this.loadBugReports();
+      const bug = issueReports.find((r) => r.id === bugId);
       if (!bug) {
         console.error('[Sidebar] Bug not found:', bugId);
         return;
@@ -3213,8 +3213,8 @@ ${taskDescription}`;
    */
   async reopenBug(bugId) {
     try {
-      const bugReports = await this.loadBugReports();
-      const bug = bugReports.find((r) => r.id === bugId);
+      const issueReports = await this.loadBugReports();
+      const bug = issueReports.find((r) => r.id === bugId);
       if (!bug) {
         console.error('[Sidebar] Bug not found:', bugId);
         return;
@@ -3405,12 +3405,12 @@ ${taskDescription}`;
    * Build page navigation dropdown
    * @param {Map} pageGroups - Map of URL to annotations array
    * @param {string} currentUrl - Current page URL
-   * @param {number} bugReportsCount - Number of bug reports
+   * @param {number} issueReportsCount - Number of bug reports
    * @returns {string} HTML string
    */
-  buildPageNavigation(pageGroups, currentUrl, bugReportsCount = 0) {
+  buildPageNavigation(pageGroups, currentUrl, issueReportsCount = 0) {
     // Always show the navigation if there are annotations OR bug reports anywhere
-    if (pageGroups.size === 0 && bugReportsCount === 0) {
+    if (pageGroups.size === 0 && issueReportsCount === 0) {
       // No annotations OR bug reports at all
       return '';
     }
@@ -3427,7 +3427,7 @@ ${taskDescription}`;
     let dropdownItems = '';
 
     // Add bug reports item at the top if there are any bug reports
-    if (bugReportsCount > 0) {
+    if (issueReportsCount > 0) {
       dropdownItems += `
         <div class="sidebar-page-nav-item sidebar-bug-reports-item" data-action="show-bug-reports">
           <div class="sidebar-page-nav-icon">
@@ -3439,7 +3439,7 @@ ${taskDescription}`;
             <div class="sidebar-page-nav-path">Issue Reports</div>
             <div class="sidebar-page-nav-host">All bug reports</div>
           </div>
-          <div class="sidebar-page-nav-badge">${bugReportsCount}</div>
+          <div class="sidebar-page-nav-badge">${issueReportsCount}</div>
         </div>
       `;
     }
@@ -4148,9 +4148,9 @@ ${taskDescription}`;
 
 
     // Build bug reports checkbox
-    let bugReportsCheckbox = '';
+    let issueReportsCheckbox = '';
     if (hasContent && activeBugReports.length > 0) {
-      bugReportsCheckbox = `
+      issueReportsCheckbox = `
         <div class="pointa-ask-ai-page-item">
           <label class="pointa-ask-ai-checkbox">
             <input type="checkbox" ${shouldPreSelectBugReports ? 'checked' : ''} class="pointa-bug-reports-checkbox" data-type="bug-report" />
@@ -4202,7 +4202,7 @@ ${taskDescription}`;
               <div class="pointa-ask-ai-section">
                 <h3>Select items to work on:</h3>
                 <div class="pointa-ask-ai-pages">
-                  ${bugReportsCheckbox}
+                  ${issueReportsCheckbox}
                   ${pageCheckboxes}
                 </div>
               </div>` : `
@@ -4331,7 +4331,7 @@ ${taskDescription}`;
 
     // Debug: Check what checkboxes are actually in the DOM
     const annotationCheckboxesInDOM = overlay.querySelectorAll('.pointa-page-checkbox');
-    const bugReportsCheckboxInDOM = overlay.querySelector('.pointa-bug-reports-checkbox');
+    const issueReportsCheckboxInDOM = overlay.querySelector('.pointa-bug-reports-checkbox');
 
 
 
@@ -4341,13 +4341,13 @@ ${taskDescription}`;
     // Function to generate prompt based on selected pages and bug reports
     const updatePrompt = () => {
       const annotationCheckboxes = overlay.querySelectorAll('.pointa-page-checkbox');
-      const bugReportsCheckbox = overlay.querySelector('.pointa-bug-reports-checkbox');
+      const issueReportsCheckbox = overlay.querySelector('.pointa-bug-reports-checkbox');
 
       const selectedUrls = Array.from(annotationCheckboxes).
       filter((cb) => cb.checked).
       map((cb) => cb.dataset.pageUrl);
 
-      const bugReportsSelected = bugReportsCheckbox && bugReportsCheckbox.checked;
+      const issueReportsSelected = issueReportsCheckbox && issueReportsCheckbox.checked;
 
       let prompt;
       let totalAnnotations = selectedUrls.reduce((sum, url) => {
@@ -4366,7 +4366,7 @@ ${taskDescription}`;
       totalTokens += this.estimateTokens(selectedAnnotations);
 
       // Add tokens for bug reports if selected
-      if (bugReportsSelected) {
+      if (issueReportsSelected) {
         totalTokens += this.estimateTokens(activeBugReports);
       }
 
@@ -4420,16 +4420,16 @@ ${taskDescription}`;
           // Skip invalid URLs
         }});const localhostList = Array.from(selectedLocalhosts).join(', ');
 
-      if (selectedUrls.length === 0 && !bugReportsSelected) {
+      if (selectedUrls.length === 0 && !issueReportsSelected) {
         prompt = 'Please select at least one item to generate a prompt.';
-      } else if (bugReportsSelected && selectedUrls.length === 0) {
+      } else if (issueReportsSelected && selectedUrls.length === 0) {
         // Only bug reports selected
-        prompt = `I have ${activeBugReports.length} bug report${activeBugReports.length > 1 ? 's' : ''} to analyze. Please read all my bug reports using the read_bug_reports tool and help me understand and fix the issues.`;
-      } else if (bugReportsSelected && selectedUrls.length > 0) {
+        prompt = `I have ${activeBugReports.length} bug report${activeBugReports.length > 1 ? 's' : ''} to analyze. Please read all my bug reports using the read_issue_reports tool and help me understand and fix the issues.`;
+      } else if (issueReportsSelected && selectedUrls.length > 0) {
         // Both annotations and bug reports selected
         if (selectedUrls.length === pageGroups.size) {
           // All pages selected
-          prompt = `I have ${totalAnnotations} Pointa annotation${totalAnnotations > 1 ? 's' : ''} and ${activeBugReports.length} bug report${activeBugReports.length > 1 ? 's' : ''} for ${localhostList}. Please read all my annotations and bug reports using the read_annotations and read_bug_reports tools, then implement the requested changes. Start with the most critical issues first.`;
+          prompt = `I have ${totalAnnotations} Pointa annotation${totalAnnotations > 1 ? 's' : ''} and ${activeBugReports.length} bug report${activeBugReports.length > 1 ? 's' : ''} for ${localhostList}. Please read all my annotations and bug reports using the read_annotations and read_issue_reports tools, then implement the requested changes. Start with the most critical issues first.`;
         } else {
           // Specific pages selected
           const urlList = selectedUrls.map((url) => {
@@ -4437,7 +4437,7 @@ ${taskDescription}`;
             return urlObj.pathname || '/';
           }).join(', ');
 
-          prompt = `I have ${totalAnnotations} Pointa annotation${totalAnnotations > 1 ? 's' : ''} and ${activeBugReports.length} bug report${activeBugReports.length > 1 ? 's' : ''} for ${localhostList}. Please read my annotations for pages: ${urlList} using the read_annotations tool with the url parameter, and read all bug reports using read_bug_reports tool, then implement the requested changes.`;
+          prompt = `I have ${totalAnnotations} Pointa annotation${totalAnnotations > 1 ? 's' : ''} and ${activeBugReports.length} bug report${activeBugReports.length > 1 ? 's' : ''} for ${localhostList}. Please read my annotations for pages: ${urlList} using the read_annotations tool with the url parameter, and read all bug reports using read_issue_reports tool, then implement the requested changes.`;
         }
       } else {
         // Only annotations selected

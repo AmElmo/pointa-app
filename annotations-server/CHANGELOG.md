@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-12-03
+
+### BREAKING CHANGES
+- **Renamed `bug_reports.json` to `issue_reports.json`**
+  - Unified terminology: "issues" encompasses both bugs and performance problems
+  - All storage now uses `issue_reports.json` in `~/.pointa/`
+  - Better reflects that file contains multiple issue types
+
+### Changed
+- **MCP Tools renamed from "bug" to "issue"**:
+  - `read_bug_reports` → `read_issue_reports`
+  - `mark_bug_needs_rerun` → `mark_issue_needs_rerun`
+  - `mark_bug_for_review` → `mark_issue_for_review`
+  - `mark_bug_resolved` → `mark_issue_resolved`
+- **Updated descriptions**: All tools now mention "bugs and performance investigations"
+- **Unified issue handling**: Same MCP tools work for both bug reports and performance investigations
+- Both issue types follow same lifecycle: active → debugging → in-review → resolved (archived)
+
+### Architecture
+- `issue_reports.json` stores both bug reports (type: 'bug') and performance investigations (type: 'performance-investigation')
+- Resolved issues (both types) automatically archived to `archive.json` with `archived_type='issue_report'`
+- Cleaner terminology throughout codebase
+
 ## [0.2.5] - 2025-12-03
 
 ### Changed
