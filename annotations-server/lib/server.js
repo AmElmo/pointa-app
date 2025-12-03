@@ -29,7 +29,7 @@ const packageJson = JSON.parse(readFileSync(path.join(__dirname, '../package.jso
 const PORT = parseInt(process.env.POINTA_PORT || '4242', 10);
 const DATA_DIR = path.join(process.env.HOME || process.env.USERPROFILE, '.pointa');
 const DATA_FILE = path.join(DATA_DIR, 'annotations.json');
-const ARCHIVE_FILE = path.join(DATA_DIR, 'archive.json');
+const ARCHIVE_FILE = path.join(DATA_DIR, 'annotations_archive.json');
 const IMAGES_DIR = path.join(DATA_DIR, 'images');
 const INSPIRATIONS_DIR = path.join(DATA_DIR, 'inspirations');
 const INSPIRATIONS_FILE = path.join(DATA_DIR, 'inspirations.json');
@@ -127,8 +127,14 @@ class LocalAnnotationsServer {
     // API endpoints for Chrome extension
     this.app.get('/api/annotations', async (req, res) => {
       try {
-        const annotations = await this.loadAnnotations();
+        let annotations = await this.loadAnnotations();
         const { status, url, limit = 50 } = req.query;
+
+        // If requesting 'all' or 'done' status, include archived annotations
+        if (status === 'all' || status === 'done') {
+          const archive = await this.loadArchive();
+          annotations = [...annotations, ...archive];
+        }
 
         let filtered = annotations;
 
@@ -255,14 +261,31 @@ class LocalAnnotationsServer {
           return res.status(404).json({ error: 'Annotation not found' });
         }
 
-        annotations[index] = {
+        const updatedAnnotation = {
           ...annotations[index],
           ...updates,
           updated_at: new Date().toISOString()
         };
 
-        await this.saveAnnotations(annotations);
-        res.json({ success: true, annotation: annotations[index] });
+        // Check if status is being changed to 'done' - if so, archive it
+        if (updatedAnnotation.status === 'done') {
+          // Remove from main annotations array
+          annotations.splice(index, 1);
+          await this.saveAnnotations(annotations);
+
+          // Add to archive
+          const archive = await this.loadArchive();
+          archive.push(updatedAnnotation);
+          await this.saveArchive(archive);
+
+          console.log(`Archived annotation ${id} (moved to annotations_archive.json)`);
+        } else {
+          // Normal update - keep in main file
+          annotations[index] = updatedAnnotation;
+          await this.saveAnnotations(annotations);
+        }
+
+        res.json({ success: true, annotation: updatedAnnotation });
       } catch (error) {
         console.error('Error updating annotation:', error);
         res.status(500).json({ error: 'Failed to update annotation' });
@@ -1763,8 +1786,14 @@ class LocalAnnotationsServer {
       throw new Error('Annotation ID is required');
     }
 
-    const annotations = await this.loadAnnotations();
-    const annotation = annotations.find((a) => a.id === id);
+    let annotations = await this.loadAnnotations();
+    let annotation = annotations.find((a) => a.id === id);
+
+    // If not found in main annotations, check archive
+    if (!annotation) {
+      const archive = await this.loadArchive();
+      annotation = archive.find((a) => a.id === id);
+    }
 
     if (!annotation) {
       throw new Error(`Annotation with ID "${id}" not found`);
@@ -1787,8 +1816,14 @@ class LocalAnnotationsServer {
   }
 
   async readAnnotations(args) {
-    const annotations = await this.loadAnnotations();
+    let annotations = await this.loadAnnotations();
     const { status = 'pending', limit = 50, offset = 0, url } = args;
+
+    // If requesting 'all' or 'done' status, include archived annotations
+    if (status === 'all' || status === 'done') {
+      const archive = await this.loadArchive();
+      annotations = [...annotations, ...archive];
+    }
 
     let filtered = annotations;
 
@@ -1980,10 +2015,16 @@ class LocalAnnotationsServer {
 
     try {
       // Load annotations - we only need to find the specific one
-      const annotations = await this.loadAnnotations();
+      let annotations = await this.loadAnnotations();
 
       // Find annotation by ID
-      const annotation = annotations.find((a) => a.id === id);
+      let annotation = annotations.find((a) => a.id === id);
+
+      // If not found in main annotations, check archive
+      if (!annotation) {
+        const archive = await this.loadArchive();
+        annotation = archive.find((a) => a.id === id);
+      }
 
       if (!annotation) {
         return {
