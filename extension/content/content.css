@@ -2527,6 +2527,47 @@
   font-weight: 500 !important;
 }
 
+/* Theme support for dropdown - dark theme */
+.pointa-spacing-dropdown[data-pointa-theme="dark"] {
+  --theme-surface: #0C0E12;
+  --theme-surface-1: #191D24;
+  --theme-text-primary: #fcfcfd;
+  --theme-text-secondary: #697586;
+  --theme-outline: #ffffff0d;
+  --theme-outline-highlight: #ffffff26;
+  --theme-accent: #0c8ce9;
+  --theme-on-accent: #ffffff;
+  --theme-surface-hover: #fcfcfd14;
+}
+
+/* Theme support for dropdown - light theme */
+.pointa-spacing-dropdown[data-pointa-theme="light"] {
+  --theme-surface: #f8f9fc;
+  --theme-surface-1: #fcfcfd;
+  --theme-text-primary: #0c111b;
+  --theme-text-secondary: #697586;
+  --theme-outline: #00000014;
+  --theme-outline-highlight: #00000028;
+  --theme-accent: #0c8ce9;
+  --theme-on-accent: #ffffff;
+  --theme-surface-hover: #0d0f1c14;
+}
+
+/* System theme preference for dropdown */
+@media (prefers-color-scheme: dark) {
+  .pointa-spacing-dropdown:not([data-pointa-theme]) {
+    --theme-surface: #0C0E12;
+    --theme-surface-1: #191D24;
+    --theme-text-primary: #fcfcfd;
+    --theme-text-secondary: #697586;
+    --theme-outline: #ffffff0d;
+    --theme-outline-highlight: #ffffff26;
+    --theme-accent: #0c8ce9;
+    --theme-on-accent: #ffffff;
+    --theme-surface-hover: #fcfcfd14;
+  }
+}
+
 /* Dark theme for design editor */
 .pointa-design-editor[data-pointa-theme="dark"] {
   --theme-surface: #0C0E12;

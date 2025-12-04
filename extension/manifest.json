@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pointa",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "AI-powered development annotations for local development projects and HTML files",
   "privacy_policy": "https://www.pointa.dev/privacy",
   "author": "Julien Berthomier - Argil.io",

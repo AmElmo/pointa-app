@@ -1255,6 +1255,7 @@ const VibeDesignEditorUI = {
     // Create dropdown
     const dropdown = document.createElement('div');
     dropdown.className = 'pointa-spacing-dropdown';
+    dropdown.setAttribute('data-pointa-theme', PointaThemeManager.getEffective());
 
     values.forEach((value) => {
       const item = document.createElement('div');
@@ -1368,6 +1369,7 @@ const VibeDesignEditorUI = {
     // Create dropdown
     const dropdown = document.createElement('div');
     dropdown.className = 'pointa-spacing-dropdown';
+    dropdown.setAttribute('data-pointa-theme', PointaThemeManager.getEffective());
 
     options.forEach((option) => {
       const item = document.createElement('div');
